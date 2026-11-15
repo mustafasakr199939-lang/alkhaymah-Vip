@@ -339,7 +339,6 @@
 
   <footer>منتجع الخيمة · بطاقة VIP والحجوزات</footer>
 
-  <!-- يلزم اتصال بالإنترنت لتحميل مكتبة QR. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     "use strict";
@@ -387,7 +386,6 @@
       "https://www.google.com/maps/search/?api=1&query=" +
       encodeURIComponent(MAPS_QUERY);
 
-    // منع اختيار تاريخ سابق للحجز.
     const today = new Date();
     const localToday = [
       today.getFullYear(),
@@ -764,7 +762,6 @@
           }
         }
       } catch (error) {
-        // عند عدم دعم استعلام الأذونات يمكن بدء المراقبة بالزر.
         console.info("ابدأ مراقبة الموقع باستخدام الزر.", error);
       }
     }
@@ -817,7 +814,6 @@
           return;
         }
 
-        // سيظهر طلب إذن الموقع من المتصفح عند بدء watchPosition.
         startGeofenceWatch();
       } catch (error) {
         setStatus(
