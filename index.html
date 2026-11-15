@@ -8,43 +8,60 @@
   <title>منتجع الخيمة | عضوية VIP والحجز</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
-
   <style>
     :root {
       color-scheme: light;
       --green: #183c32;
-      --green-light: #245746;
+      --green-2: #245746;
+      --green-3: #102f26;
       --gold: #d7b66d;
-      --cream: #f7f3e9;
+      --gold-soft: #f1d9a2;
+      --gold-deep: #b6842d;
+      --brown: #472a20;
+      --brown-2: #6b3e2e;
+      --cream: #f7f1e4;
+      --cream-2: #efe4c9;
       --ink: #1d2924;
-      --muted: #65736c;
-      --white: #fff;
-      --border: #e4e6df;
-      --danger: #a63d37;
-      --shadow: 0 14px 40px rgba(24, 60, 50, .10);
+      --muted: #5e6d66;
+      --white: #ffffff;
+      --danger: #ab443d;
+      --shadow: 0 18px 40px rgba(19, 41, 34, 0.18);
+      --shadow-soft: 0 14px 32px rgba(19, 41, 34, 0.10);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
     }
 
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      background: var(--cream);
+      background:
+        radial-gradient(circle at top, rgba(215,182,109,0.18), transparent 30%),
+        linear-gradient(180deg, #f6efe5, #f2ead6 45%, #f3efe7 100%);
       color: var(--ink);
       font-family: Tahoma, Arial, sans-serif;
       line-height: 1.7;
     }
 
+    a { color: inherit; }
     button, input, select, textarea { font: inherit; }
 
     .topbar {
-      background: var(--green);
+      background: rgba(20, 35, 31, 0.94);
+      border-bottom: 3px solid rgba(215,182,109,0.8);
       color: var(--white);
-      padding: 18px 20px;
-      border-bottom: 3px solid var(--gold);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(14, 29, 24, 0.12);
     }
 
     .topbar-inner, main {
-      width: min(1050px, calc(100% - 32px));
+      width: min(1100px, calc(100% - 30px));
       margin: 0 auto;
     }
 
@@ -52,80 +69,586 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
+      padding: 16px 0;
       flex-wrap: wrap;
     }
 
-    .brand { margin: 0; font-size: 1.35rem; }
-    .brand span { color: var(--gold); }
-    .topbar p { margin: 3px 0 0; color: #e5e9e5; font-size: .92rem; }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f0d78d, #d7b66d 45%, #b8842c);
+      border: 2px solid rgba(255,255,255,0.5);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 18px rgba(215,182,109,0.28);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2vw, 1.7rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: -2px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.78);
+    }
 
     .header-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
+      align-items: center;
     }
 
-    main { padding: 30px 0 48px; }
-    .intro { margin-bottom: 24px; }
-    .intro h2 { margin: 0 0 5px; font-size: 1.55rem; }
-    .intro p { color: var(--muted); margin: 0; }
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 18px;
+      min-height: 44px;
+      cursor: pointer;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
 
-    .grid {
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      color: #2a2217;
+      box-shadow: 0 12px 22px rgba(215,182,109,0.25);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #f0d189, var(--gold));
+      color: #2f2b21;
+      box-shadow: 0 12px 22px rgba(215,182,109,0.28);
+    }
+
+    .btn-light {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: var(--white);
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #18a25f, #0f7c4d);
+      color: var(--white);
+      box-shadow: 0 12px 20px rgba(24, 162, 95, 0.24);
+    }
+
+    main { padding: 28px 0 46px; }
+
+    .hero {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
-      align-items: start;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 28px;
+      padding: 18px 0 12px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(215,182,109,0.12);
+      color: var(--green);
+      border: 1px solid rgba(215,182,109,0.45);
+      font-weight: 800;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+
+    .hero-copy h2 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.12;
+      color: var(--green);
+    }
+
+    .hero-copy p {
+      margin: 16px 0 20px;
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 1.06rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .stat-pill {
+      min-width: 120px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(215,182,109,0.35);
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat-pill strong {
+      display: block;
+      color: var(--green);
+      font-size: 1.15rem;
+    }
+
+    .stat-pill span {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .badge-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 500px;
+      position: relative;
+    }
+
+    .camp-badge {
+      position: relative;
+      width: min(92vw, 500px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 30%),
+        linear-gradient(135deg, #0c0f0f, #0c1110 22%, #111d1b 52%, #1d1c15 100%);
+      border: 10px solid #0a0f0f;
+      box-shadow:
+        0 0 0 8px rgba(215,182,109,0.95),
+        0 0 0 16px rgba(18, 32, 27, 0.95),
+        0 28px 54px rgba(18,31,26,0.24);
+      overflow: hidden;
+    }
+
+    .camp-badge .gold-ring {
+      position: absolute;
+      inset: 11%;
+      border: 10px solid rgba(215,182,109,0.95);
+      border-radius: 50%;
+    }
+
+    .camp-badge .gold-ring::before,
+    .camp-badge .gold-ring::after {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border: 2px solid rgba(215,182,109,0.78);
+      border-radius: 50%;
+    }
+
+    .camp-badge .palm {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: transparent;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,0.14));
+    }
+
+    .camp-badge .palm::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 82px;
+      background: linear-gradient(180deg, #714522, #3a220d);
+      border-radius: 8px;
+    }
+
+    .camp-badge .palm::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 32px;
+      width: 100px;
+      height: 70px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse at center, rgba(42,135,54,0.9), rgba(42,135,54,0.95) 42%, rgba(16,82,33,0.95) 100%);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      border-radius: 60% 60% 40% 40%;
+      box-shadow:
+        -32px 8px 0 -10px #2d914d,
+        32px 8px 0 -10px #2d914d,
+        -14px 24px 0 -8px #4baa42,
+        14px 24px 0 -8px #4baa42;
+    }
+
+    .palm.left { left: 18px; bottom: 34px; transform: rotate(-22deg); }
+    .palm.right { right: 18px; bottom: 34px; transform: scaleX(-1) rotate(-22deg); }
+
+    .tent-shell {
+      position: absolute;
+      left: 50%;
+      top: 18%;
+      width: 76%;
+      height: 62%;
+      transform: translateX(-50%);
+      border-radius: 18% 18% 12% 12% / 20% 20% 10% 10%;
+      background: linear-gradient(180deg, #2d1f1c 0%, #2d1f1c 25%, #5d2b1f 68%, #2a1a15 100%);
+      box-shadow: inset 0 0 0 4px rgba(215,182,109,0.9), inset 0 -20px 16px rgba(0,0,0,0.14);
+      overflow: hidden;
+    }
+
+    .tent-shell::before,
+    .tent-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0, rgba(215,182,109,0.55) 40%, transparent 100%);
+      transform: translateX(-24%);
+      opacity: 0.7;
+    }
+
+    .tent-roof {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 92%;
+      height: 32%;
+      background: linear-gradient(180deg, #d7b66d, #aa7b2f 60%, #6f401d);
+      clip-path: polygon(12% 100%, 50% 0, 88% 100%);
+      border-radius: 65% 65% 0 0;
+      box-shadow: 0 10px 0 rgba(0,0,0,0.12);
+      border: 2px solid rgba(11,10,8,0.55);
+      overflow: hidden;
+    }
+
+    .tent-roof::before {
+      content: "";
+      position: absolute;
+      inset: 10% 12% 18% 12%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(0,0,0,0.12));
+      clip-path: polygon(12% 100%, 50% 0, 88% 100%);
+    }
+
+    .cross-ropes {
+      position: absolute;
+      inset: 20% 8% 18% 8%;
+      border-radius: 18px;
+      border: 3px solid rgba(215,182,109,0.7);
+      border-top: 0;
+      background: linear-gradient(180deg, rgba(26,18,13,0.2), rgba(26,18,13,0.52));
+    }
+
+    .cross-ropes::before, .cross-ropes::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: rgba(215,182,109,0.6);
+      transform: translateX(-50%);
+    }
+
+    .cross-ropes::after {
+      left: 38%;
+      width: 1px;
+    }
+
+    .tent-center {
+      position: absolute;
+      left: 50%;
+      bottom: 18%;
+      transform: translateX(-50%);
+      width: 68%;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.12));
+      border-radius: 16px 16px 12px 12px;
+      border: 2px solid rgba(215,182,109,0.75);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .tent-center .arabic {
+      color: rgba(255,245,213,0.95);
+      font-weight: 700;
+      font-size: clamp(1.3rem, 3vw, 2.2rem);
+      text-shadow: 0 0 12px rgba(255,255,255,0.15);
+      letter-spacing: 0.08em;
+    }
+
+    .tent-center .arabic span {
+      display: block;
+      font-size: clamp(1.8rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      color: #f7d78d;
+    }
+
+    .tent-center::before,
+    .tent-center::after {
+      content: "";
+      position: absolute;
+      inset: 6% 12%;
+      border: 1px solid rgba(215,182,109,0.6);
+      border-radius: 12px;
+    }
+
+    .canvas-pattern {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.06), transparent 38%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 14px, transparent 14px, transparent 28px);
+      pointer-events: none;
+    }
+
+    .badge-bottom {
+      position: absolute;
+      left: 50%;
+      bottom: 6%;
+      transform: translateX(-50%);
+      width: 68%;
+      padding: 10px 18px 12px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #f2d68f, #d7b66d 60%, #b88328);
+      color: #2c2215;
+      text-align: center;
+      box-shadow: inset 0 0 0 1px rgba(72,38,18,0.5);
+      border: 1px solid rgba(56,35,19,0.5);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .section {
+      margin-top: 32px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(215,182,109,0.3);
+      border-radius: var(--radius-xl);
+      padding: 24px 20px 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .section-head h3 {
+      margin: 0;
+      font-size: clamp(1.5rem, 2vw, 2.3rem);
+      color: var(--green);
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .offer-grid, .review-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .offer-card {
+      position: relative;
+      overflow: hidden;
+      padding: 18px 18px 16px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(24,60,50,0.97), rgba(21,44,36,0.97) 65%, rgba(69,40,27,0.96));
+      color: var(--white);
+      border: 1px solid rgba(215,182,109,0.6);
+      box-shadow: 0 14px 28px rgba(26, 48, 40, 0.17);
+    }
+
+    .offer-card::before {
+      content: "";
+      position: absolute;
+      inset: -20% -18% auto auto;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 1px solid rgba(215,182,109,0.34);
+      box-shadow: 0 0 0 20px rgba(215,182,109,0.04);
+    }
+
+    .offer-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f5d98b, #d7b66d);
+      color: #2a2115;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .offer-card h4 {
+      margin: 0 0 8px;
+      position: relative;
+      z-index: 1;
+      color: var(--gold-soft);
+      font-size: 1.08rem;
+    }
+
+    .offer-card p {
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      color: rgba(255,255,255,0.82);
+      font-size: 0.9rem;
+    }
+
+    .review-card {
+      background: var(--white);
+      border: 1px solid rgba(215,182,109,0.3);
+      border-radius: 20px;
+      padding: 18px 16px 14px;
+      box-shadow: 0 12px 22px rgba(24,60,50,0.08);
+    }
+
+    .review-stars {
+      color: #ca9b30;
+      letter-spacing: 3px;
+      font-size: 1.1rem;
+    }
+
+    .review-card blockquote {
+      margin: 12px 0 14px;
+      color: #495b56;
+      font-size: 0.92rem;
+    }
+
+    .review-card strong {
+      color: var(--green);
+      font-size: 0.9rem;
+    }
+
+    .vip-panel {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 32px;
     }
 
     .panel {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: var(--shadow);
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(215,182,109,0.3);
+      border-radius: var(--radius-xl);
+      padding: 22px 20px;
+      box-shadow: var(--shadow-soft);
     }
 
-    .panel h2 { margin: 0 0 6px; font-size: 1.2rem; }
-    .panel-lead { color: var(--muted); margin: 0 0 18px; font-size: .94rem; }
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.4rem, 2vw, 2rem);
+      color: var(--green);
+    }
+
+    .panel-lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
 
     .vip-card {
       min-height: 230px;
       padding: 22px;
-      border-radius: 16px;
-      border: 1px solid rgba(215, 182, 109, .6);
+      border-radius: 20px;
       color: var(--white);
       background:
-        radial-gradient(circle at 12% 100%, rgba(215,182,109,.22), transparent 32%),
-        linear-gradient(135deg, #1d4b3d, #102c25);
+        radial-gradient(circle at 18% 100%, rgba(215,182,109,0.22), transparent 28%),
+        linear-gradient(135deg, #1d4a3d, #102c25);
+      border: 1px solid rgba(215,182,109,0.7);
       display: grid;
-      grid-template-columns: 1fr 132px;
+      grid-template-columns: 1fr 130px;
       gap: 14px;
       align-items: center;
       overflow: hidden;
+      position: relative;
+      isolation: isolate;
     }
 
-    .vip-card h3 { margin: 0 0 2px; color: var(--gold); font-size: 1.25rem; }
-    .vip-card .card-label { margin: 0 0 20px; color: #e9eee9; font-size: .85rem; }
+    .vip-card::before {
+      content: "";
+      position: absolute;
+      inset: -26% -56% auto auto;
+      width: 220px;
+      height: 220px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(215,182,109,0.08), transparent);
+      transform: rotate(18deg);
+      filter: blur(5px);
+      z-index: -1;
+    }
+
+    .vip-card h4 {
+      margin: 0 0 2px;
+      color: var(--gold-soft);
+      font-size: 1.2rem;
+    }
+
+    .vip-card .card-label {
+      margin: 0 0 18px;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.8rem;
+    }
+
     .member-id {
       font-size: 1.25rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 1px;
       direction: ltr;
       text-align: right;
+      color: #fff;
     }
-    .member-name, .gift-line { margin: 5px 0 0; font-size: .9rem; color: #f2f2eb; }
-    .gift-line strong { color: var(--gold); }
+
+    .member-name, .gift-line { margin: 6px 0 0; font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+    .gift-line strong { color: var(--gold-soft); }
 
     .qr-box {
       width: 124px;
       height: 124px;
       background: #fff;
+      border-radius: 12px;
       padding: 7px;
-      border-radius: 10px;
       display: grid;
       place-items: center;
       overflow: hidden;
+      justify-self: end;
     }
 
     #qrcode canvas, #qrcode img {
@@ -134,91 +657,184 @@
       max-height: 110px;
     }
 
-    .qr-placeholder { color: #59645d; font-size: .72rem; text-align: center; }
+    .qr-placeholder { color: #5d625f; text-align: center; font-size: 0.72rem; }
 
     .field { margin: 14px 0; }
-    label { display: block; font-weight: 700; margin-bottom: 6px; font-size: .93rem; }
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 800;
+      color: var(--green);
+      font-size: 0.92rem;
+    }
 
     input, select, textarea {
+      display: block;
       width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #cfd6d0;
-      border-radius: 10px;
+      padding: 12px 13px;
+      border: 1px solid #d7ddd7;
+      border-radius: 12px;
       background: #fff;
       color: var(--ink);
       outline: none;
     }
 
     input:focus, select:focus, textarea:focus {
-      border-color: var(--green-light);
-      box-shadow: 0 0 0 3px rgba(36, 87, 70, .12);
+      border-color: var(--green-2);
+      box-shadow: 0 0 0 3px rgba(36,87,70,0.12);
     }
 
-    textarea { min-height: 92px; resize: vertical; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-
-    .btn {
-      border: 0;
-      border-radius: 10px;
-      padding: 11px 16px;
-      min-height: 44px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: transform .15s ease, opacity .15s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    textarea {
+      min-height: 100px;
+      resize: vertical;
     }
 
-    .btn:hover { transform: translateY(-1px); }
-    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
-    .btn-primary { background: var(--green); color: #fff; }
-    .btn-gold { background: var(--gold); color: #2b281f; }
-    .btn-light { background: #eef2ee; color: var(--green); border: 1px solid #d8e0d9; }
-    .btn-whatsapp { background: #168b52; color: #fff; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-    .status { min-height: 24px; margin: 12px 0 0; color: var(--muted); font-size: .9rem; }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .status {
+      min-height: 24px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
     .status.error { color: var(--danger); }
+    .status.success { color: #0f7a57; }
 
     .note {
-      margin-top: 14px;
-      padding: 11px 13px;
+      margin-top: 16px;
+      padding: 12px 14px;
       background: #f7f5ed;
       border-right: 3px solid var(--gold);
-      border-radius: 8px;
-      color: #5f5a4b;
-      font-size: .85rem;
+      border-radius: 10px;
+      color: #5d584a;
+      font-size: 0.85rem;
     }
 
     .map-box {
       background: #f5f7f4;
-      border: 1px dashed #c7d1c9;
-      border-radius: 12px;
-      padding: 13px;
+      border: 1px dashed #c9d1c8;
+      border-radius: 14px;
+      padding: 12px 13px;
       color: var(--muted);
-      font-size: .9rem;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .booking-shortcuts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 15px;
+      padding: 10px 12px;
+      border: 1px solid rgba(215,182,109,0.35);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(247,241,228,0.8), rgba(255,255,255,0.8));
+    }
+
+    .booking-shortcuts span {
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-inline-end: 4px;
+      align-self: center;
+    }
+
+    .guest-choice {
+      border: 1px solid rgba(24,60,50,0.18);
+      background: #fff;
+      color: var(--green);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+
+    .guest-choice:hover, .guest-choice:focus-visible {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .reviews-wrap {
+      margin-top: 32px;
     }
 
     footer {
       text-align: center;
       color: var(--muted);
-      padding: 0 16px 28px;
-      font-size: .85rem;
+      padding: 20px 16px 5px;
+      font-size: 0.85rem;
+    }
+
+    .floating-contact {
+      position: fixed;
+      left: 18px;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #18a25f, #0f7c4d);
+      box-shadow: 0 14px 28px rgba(17,124,77,0.25);
+      z-index: 50;
+      font-weight: 800;
+    }
+
+    .floating-contact span:first-child {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      font-size: 1rem;
+    }
+
+    .floating-contact span:last-child {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 950px) {
+      .hero { grid-template-columns: 1fr; }
+      .vip-panel { grid-template-columns: 1fr; }
+      .badge-wrap { order: -1; min-height: 400px; }
     }
 
     @media (max-width: 760px) {
-      .grid { grid-template-columns: 1fr; }
-      .topbar-inner { align-items: flex-start; flex-direction: column; }
+      .offer-grid, .review-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .topbar-inner { align-items: flex-start; }
+      .header-actions { width: 100%; }
+      .btn { flex: 1 1 auto; }
     }
 
-    @media (max-width: 420px) {
-      .panel { padding: 17px; }
-      .vip-card { grid-template-columns: 1fr 102px; padding: 16px; }
-      .qr-box { width: 98px; height: 98px; padding: 5px; }
+    @media (max-width: 540px) {
+      .floating-contact { left: 12px; right: 12px; justify-content: center; }
+      .floating-contact span:last-child { font-size: 0.86rem; }
+      .hero-copy h2 { font-size: clamp(1.95rem, 12vw, 3.1rem); }
+      .camp-badge { width: min(90vw, 420px); }
+      .vip-card { grid-template-columns: 1fr 100px; padding: 18px 14px; }
+      .qr-box { width: 96px; height: 96px; }
       #qrcode canvas, #qrcode img { max-width: 88px; max-height: 88px; }
-      .form-row { grid-template-columns: 1fr; gap: 0; }
     }
   </style>
 </head>
@@ -226,9 +842,12 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div>
-        <h1 class="brand">منتجع الخيمة <span>VIP</span></h1>
-        <p>عضويتك الخاصة وحجز جلستك</p>
+      <div class="brand-wrap">
+        <div class="brand-badge">VIP</div>
+        <div class="brand">
+          <h1>منتجع الخيمة</h1>
+          <small>عضوية خاصة • حجز جلسات • ضيافة فاخرة</small>
+        </div>
       </div>
 
       <div class="header-actions">
@@ -239,26 +858,111 @@
   </header>
 
   <main>
-    <section class="intro">
-      <h2>مرحباً بك في منتجع الخيمة</h2>
-      <p>فعّل بطاقة VIP، احصل على هديتك، ثم أرسل تفاصيل حجزك مباشرةً عبر واتساب.</p>
+    <section class="hero" aria-label="مقدمة منتجع الخيمة">
+      <div class="hero-copy">
+        <div class="eyebrow">الضيافة الفاخرة في قلب الصحراء</div>
+        <h2>الخيمة التي تذكرنا بالتجربة الأصيله والخصوصية الفاخرة</h2>
+        <p>بطاقة VIP مميزة، جلسات عائلية ومخصصة، ومقترحات ضيافة مختارة تجعل كل زيارة تستحق التكرار.</p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#vipHeading">اكتشف عضويتك</a>
+          <a class="btn btn-whatsapp" href="https://wa.me/201020014584" target="_blank" rel="noopener noreferrer">احجز عبر واتساب</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-pill"><strong>VIP</strong><span>عضوية مميزة</span></div>
+          <div class="stat-pill"><strong>24/7</strong><span>تجربة متصلة</span></div>
+          <div class="stat-pill"><strong>عائلي</strong><span>جلسات خاصة</span></div>
+        </div>
+      </div>
+
+      <div class="badge-wrap" aria-hidden="true">
+        <div class="camp-badge">
+          <div class="gold-ring"></div>
+          <div class="palm left"></div>
+          <div class="palm right"></div>
+          <div class="tent-roof"></div>
+          <div class="tent-shell">
+            <div class="cross-ropes"></div>
+            <div class="canvas-pattern"></div>
+          </div>
+          <div class="tent-center">
+            <div class="arabic"><span>الخيمة</span>منتجع</div>
+          </div>
+          <div class="badge-bottom">VIP · Club Experience</div>
+        </div>
+      </div>
     </section>
 
-    <div class="grid">
+    <section class="section" aria-labelledby="offersTitle">
+      <div class="section-head">
+        <h3 id="offersTitle">عروض الضيافة</h3>
+        <span>مناسبات • جلسات • عضوية</span>
+      </div>
+
+      <div class="offer-grid">
+        <article class="offer-card">
+          <span class="offer-badge">VIP</span>
+          <h4>بطاقة عضوية مميزة</h4>
+          <p>تفعيل عضويتك يضمن لك هدية ضيافة خاصة، وبطاقة رقمية جاهزة للاستعمال.</p>
+        </article>
+
+        <article class="offer-card">
+          <span class="offer-badge">جلسات</span>
+          <h4>جلسات عائلية ومناسبات</h4>
+          <p>جهز جلسة مناسبة لاحتفالاتك مع خدمة مستقرة ودعم مباشر لتنسيق التفاصيل.</p>
+        </article>
+
+        <article class="offer-card">
+          <span class="offer-badge">ضيافة</span>
+          <h4>قهوة عربية وأجواءٍ مميزة</h4>
+          <p>مزيج من الطابع التراثي وراحة الاستقبال مع خدمة تميز لكل ضيف في منتجع الخيمة.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="reviews-wrap section" aria-labelledby="reviewsTitle">
+      <div class="section-head">
+        <h3 id="reviewsTitle">تقييمات العملاء</h3>
+        <span>آراء الحضور والضيوف</span>
+      </div>
+
+      <div class="review-grid">
+        <article class="review-card">
+          <div class="review-stars" aria-label="خمس نجوم">★★★★★</div>
+          <blockquote>«الأجواء هادئة، والاهتمام بالضيوف رائع، خاصة في خدمة الحجز والبطاقة المميزة.»</blockquote>
+          <strong>عائلة من الرياض</strong>
+        </article>
+
+        <article class="review-card">
+          <div class="review-stars" aria-label="خمس نجوم">★★★★★</div>
+          <blockquote>«مكان أنيق ومعروض بشكل احترافي، والخدمة جعلت المناسبة أكثر سلاسة واحترافية.»</blockquote>
+          <strong>حجز عزومة</strong>
+        </article>
+
+        <article class="review-card">
+          <div class="review-stars" aria-label="خمس نجوم">★★★★★</div>
+          <blockquote>«التفاصيل جميلة جدًا، والبطاقة VIP تضيف قيمة مميزة وتجربة مخصصة لكل ضيف.»</blockquote>
+          <strong>ضيف VIP</strong>
+        </article>
+      </div>
+    </section>
+
+    <div class="vip-panel">
       <section class="panel" aria-labelledby="vipHeading">
-        <h2 id="vipHeading">بطاقة عضوية VIP</h2>
-        <p class="panel-lead">تُحفظ بيانات العضوية والهدية على هذا الجهاز.</p>
+        <h3 id="vipHeading">بطاقة عضوية VIP</h3>
+        <p class="panel-lead">تُحفظ بيانات العضوية والهدية على هذا الجهاز، ويمكنك تحميلها لاحقاً.</p>
 
         <div class="vip-card" id="vipCard">
           <div>
-            <h3>منتجع الخيمة</h3>
+            <h4>منتجع الخيمة</h4>
             <p class="card-label">بطاقة عضوية VIP</p>
             <div class="member-id" id="memberId">KH-2026-----</div>
             <p class="member-name" id="memberName">لم يتم تفعيل البطاقة بعد</p>
             <p class="gift-line">هدية صندوق الضيافة: <strong id="giftName">بانتظار التفعيل</strong></p>
           </div>
           <div class="qr-box">
-            <div id="qrcode"><span class="qr-placeholder">يظهر رمز QR بعد التفعيل</span></div>
+            <div id="qrcode"><span class="qr-placeholder">رمز QR</span></div>
           </div>
         </div>
 
@@ -270,7 +974,7 @@
         <div class="actions">
           <button class="btn btn-primary" id="activateButton" type="button">تفعيل البطاقة والحصول على هدية</button>
           <button class="btn btn-light" id="downloadButton" type="button" disabled>تحميل البطاقة كصورة</button>
-          <button class="btn btn-whatsapp" id="inviteButton" type="button">دعوة الأصدقاء عبر واتساب</button>
+          <button class="btn btn-whatsapp" id="inviteButton" type="button">دعوة الأصدقاء</button>
         </div>
 
         <p class="status" id="vipStatus" aria-live="polite"></p>
@@ -283,8 +987,15 @@
       </section>
 
       <section class="panel" id="booking" aria-labelledby="bookingHeading">
-        <h2 id="bookingHeading">نموذج الحجز المباشر</h2>
+        <h3 id="bookingHeading">نموذج الحجز المباشر</h3>
         <p class="panel-lead">املأ بيانات الجلسة وسنجهز رسالة الحجز لك في واتساب.</p>
+
+        <div class="booking-shortcuts" aria-label="اختيار سريع لعدد الضيوف">
+          <span>عدد الضيوف:</span>
+          <button class="guest-choice" type="button" data-guests="2">2</button>
+          <button class="guest-choice" type="button" data-guests="4">4</button>
+          <button class="guest-choice" type="button" data-guests="8">8</button>
+        </div>
 
         <form id="bookingForm">
           <div class="field">
@@ -325,9 +1036,7 @@
 
           <div class="actions">
             <button class="btn btn-primary" type="submit">إرسال تفاصيل الحجز إلى واتساب</button>
-            <a class="btn btn-light" id="mapButton" href="#" target="_blank" rel="noopener noreferrer">
-              فتح الموقع على خرائط Google
-            </a>
+            <a class="btn btn-light" id="mapButton" href="#" target="_blank" rel="noopener noreferrer">فتح الموقع على خرائط Google</a>
           </div>
 
           <p class="status" id="bookingStatus" aria-live="polite"></p>
@@ -338,6 +1047,11 @@
   </main>
 
   <footer>منتجع الخيمة · بطاقة VIP والحجوزات</footer>
+
+  <a class="floating-contact" href="https://wa.me/201020014584" target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
+    <span>✆</span>
+    <span>تواصل عبر واتساب</span>
+  </a>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
@@ -376,15 +1090,14 @@
       notify: document.getElementById("notifyButton"),
       geofenceButton: document.getElementById("geofenceButton"),
       map: document.getElementById("mapButton"),
-      bookingDate: document.getElementById("bookingDate")
+      bookingDate: document.getElementById("bookingDate"),
+      guests: document.getElementById("guests")
     };
 
     let currentPass = null;
     let geolocationWatchId = null;
 
-    els.map.href =
-      "https://www.google.com/maps/search/?api=1&query=" +
-      encodeURIComponent(MAPS_QUERY);
+    els.map.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(MAPS_QUERY);
 
     const today = new Date();
     const localToday = [
@@ -394,9 +1107,16 @@
     ].join("-");
     els.bookingDate.min = localToday;
 
+    document.querySelectorAll(".guest-choice").forEach(button => {
+      button.addEventListener("click", () => {
+        els.guests.value = button.dataset.guests || els.guests.value;
+      });
+    });
+
     function setStatus(element, message, isError) {
       element.textContent = message || "";
       element.classList.toggle("error", Boolean(isError));
+      element.classList.toggle("success", !isError && Boolean(message));
     }
 
     function readPass() {
@@ -404,18 +1124,12 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return null;
         const parsed = JSON.parse(raw);
-
-        if (
-          parsed &&
-          typeof parsed.memberId === "string" &&
-          typeof parsed.gift === "string"
-        ) {
+        if (parsed && typeof parsed.memberId === "string" && typeof parsed.gift === "string") {
           return parsed;
         }
       } catch (error) {
         console.warn("تعذر قراءة بيانات العضوية:", error);
       }
-
       return null;
     }
 
@@ -441,7 +1155,7 @@
       if (typeof QRCode === "undefined") {
         const fallback = document.createElement("span");
         fallback.className = "qr-placeholder";
-        fallback.textContent = "تعذر تحميل مكتبة QR. تحقق من الاتصال بالإنترنت.";
+        fallback.textContent = "QR";
         els.qr.appendChild(fallback);
         return false;
       }
@@ -465,7 +1179,7 @@
         els.memberId.textContent = "KH-" + new Date().getFullYear() + "-----";
         els.memberName.textContent = "لم يتم تفعيل البطاقة بعد";
         els.giftName.textContent = "بانتظار التفعيل";
-        els.qr.innerHTML = '<span class="qr-placeholder">يظهر رمز QR بعد التفعيل</span>';
+        els.qr.innerHTML = '<span class="qr-placeholder">رمز QR</span>';
         els.download.disabled = true;
         els.activate.disabled = false;
         return;
@@ -498,377 +1212,154 @@
       };
 
       if (!savePass(pass)) {
-        setStatus(els.vipStatus, "تعذر حفظ البطاقة. تحقق من إعدادات التخزين في المتصفح.", true);
+        setStatus(els.vipStatus, "تعذر حفظ البطاقة. جرّب مرة أخرى.", true);
         return;
       }
 
       renderPass(pass);
-      setStatus(els.vipStatus, "تم تفعيل البطاقة! هديتك الفورية: " + gift, false);
-      showLocalNotification("تم تفعيل عضوية VIP", "هديتك: " + gift);
     }
 
-    function inviteUrl() {
-      const id = currentPass ? currentPass.memberId : "";
-      const message =
-        "أدعوك لزيارة منتجع الخيمة والاستمتاع بتجربة مميزة." +
-        (id ? " رقم عضويتي VIP: " + id : "");
+    function handleDownloadCard() {
+      const card = document.getElementById("vipCard");
+      if (!card) return;
 
-      return "https://wa.me/?text=" + encodeURIComponent(message);
-    }
-
-    function downloadCard() {
-      if (!currentPass) {
-        setStatus(els.vipStatus, "فعّل البطاقة أولاً لتحميلها.", true);
+      const printWindow = window.open("", "_blank", "width=1200,height=700");
+      if (!printWindow) {
+        setStatus(els.vipStatus, "تعذر فتح نافذة المعاينة. جرّب مرة أخرى.", true);
         return;
       }
 
-      const qrCanvas = els.qr.querySelector("canvas");
-      if (!qrCanvas) {
-        setStatus(els.vipStatus, "رمز QR غير جاهز. تحقق من الاتصال ثم أعد تحميل الصفحة.", true);
+      const cardMarkup = card.outerHTML;
+      printWindow.document.write(`
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>بطاقة VIP</title>
+            <style>
+              body { margin: 0; background: #f4f1ea; display: grid; place-items: center; font-family: Tahoma, Arial, sans-serif; }
+              .vip-print { width: 760px; max-width: 92vw; }
+              .vip-card { margin: 0; }
+            </style>
+          </head>
+          <body>
+            <div class="vip-print">${cardMarkup}</div>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      setStatus(els.vipStatus, "تم تجهيز بطاقة VIP للعرض والطباعة.", false);
+    }
+
+    function inviteFriends() {
+      const encodedText = encodeURIComponent("انضم إلى منتجع الخيمة واطّلع على عضوية VIP واستمتع بالأجواء الفاخرة\nhttps://wa.me/201020014584");
+      window.open(`https://wa.me/?text=${encodedText}`, "_blank");
+    }
+
+    function sendBookingMessage(event) {
+      event.preventDefault();
+
+      const form = event.currentTarget;
+      const data = new FormData(form);
+      const name = (data.get("name") || "").toString().trim();
+      const guests = (data.get("guests") || "").toString().trim();
+      const sessionType = (data.get("sessionType") || "").toString().trim();
+      const date = (data.get("date") || "").toString().trim();
+      const time = (data.get("time") || "").toString().trim();
+      const notes = (data.get("notes") || "").toString().trim();
+
+      if (!name || !guests || !sessionType || !date || !time) {
+        setStatus(els.bookingStatus, "يرجى إكمال جميع الحقول المطلوبة أولاً.", true);
         return;
       }
 
-      const canvas = document.createElement("canvas");
-      canvas.width = 1200;
-      canvas.height = 720;
-      const ctx = canvas.getContext("2d");
+      const message = [
+        "السلام عليكم، أود حجز جلسة في منتجع الخيمة.",
+        `الاسم: ${name}`,
+        `عدد الضيوف: ${guests}`,
+        `نوع الجلسة: ${sessionType}`,
+        `التاريخ: ${date}`,
+        `الوقت: ${time}`,
+        notes ? `ملاحظات: ${notes}` : "",
+        "يرجى تأكيد الحجز والتواصل معي.",
+        ""
+      ].filter(Boolean).join("\n");
 
-      const gradient = ctx.createLinearGradient(0, 0, 1200, 720);
-      gradient.addColorStop(0, "#245746");
-      gradient.addColorStop(1, "#102c25");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.strokeStyle = "#d7b66d";
-      ctx.lineWidth = 7;
-      ctx.strokeRect(24, 24, 1152, 672);
-
-      ctx.direction = "rtl";
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#d7b66d";
-      ctx.font = "bold 58px Tahoma, Arial";
-      ctx.fillText("منتجع الخيمة", 1080, 130);
-
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "34px Tahoma, Arial";
-      ctx.fillText("بطاقة عضوية VIP", 1080, 190);
-
-      ctx.direction = "ltr";
-      ctx.textAlign = "left";
-      ctx.font = "bold 52px Arial";
-      ctx.fillText(currentPass.memberId, 90, 330);
-
-      ctx.direction = "rtl";
-      ctx.textAlign = "right";
-      ctx.font = "32px Tahoma, Arial";
-      ctx.fillText(currentPass.name ? "العضو: " + currentPass.name : "عضو VIP", 1080, 410);
-
-      ctx.fillStyle = "#d7b66d";
-      ctx.font = "bold 31px Tahoma, Arial";
-      ctx.fillText("هدية صندوق الضيافة", 1080, 500);
-
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "28px Tahoma, Arial";
-      ctx.fillText(currentPass.gift, 1080, 550);
-
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(90, 425, 230, 230);
-      ctx.drawImage(qrCanvas, 100, 435, 210, 210);
-
-      const link = document.createElement("a");
-      link.download = "alkhaymah-vip-" + currentPass.memberId + ".png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-
-      setStatus(els.vipStatus, "تم تجهيز صورة البطاقة للتنزيل.", false);
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
+      setStatus(els.bookingStatus, "تم تجهيز رسالة الحجز في واتساب.", false);
     }
 
-    async function showLocalNotification(title, body) {
-      if (!("Notification" in window) || Notification.permission !== "granted") return;
-
-      const options = {
-        body,
-        data: {
-          url: location.href,
-          inviteUrl: inviteUrl()
-        },
-        actions: [
-          { action: "book", title: "الحجز" },
-          { action: "invite", title: "دعوة صديق" }
-        ]
-      };
-
-      try {
-        if ("serviceWorker" in navigator) {
-          const registration = await navigator.serviceWorker.ready;
-          await registration.showNotification(title, options);
-        } else {
-          new Notification(title, { body });
-        }
-      } catch (error) {
-        console.warn("تعذر عرض الإشعار:", error);
-      }
-    }
-
-    function distanceInMeters(lat1, lon1, lat2, lon2) {
+    function geofenceDistanceMeters(lat, lon) {
       const earthRadius = 6371000;
-      const toRadians = degrees => degrees * Math.PI / 180;
-      const dLat = toRadians(lat2 - lat1);
-      const dLon = toRadians(lon2 - lon1);
-
+      const dLat = ((lat - GEO_TARGET.lat) * Math.PI) / 180;
+      const dLon = ((lon - GEO_TARGET.lon) * Math.PI) / 180;
       const a =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) ** 2;
-
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((GEO_TARGET.lat * Math.PI) / 180) *
+          Math.cos((lat * Math.PI) / 180) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
       return 2 * earthRadius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
-    async function notifyGeofenceArrival() {
-      const options = {
-        body: "أنت بالقرب من منتجع الخيمة. يسعدنا استقبالُك.",
-        data: {
-          url: location.href,
-          inviteUrl: inviteUrl()
-        },
-        actions: [
-          { action: "book", title: "الحجز" },
-          { action: "invite", title: "دعوة صديق" }
-        ],
-        tag: "alkhaymah-arrival",
-        renotify: false
-      };
-
-      try {
-        const registration = await navigator.serviceWorker.ready;
-        await registration.showNotification("منتجع الخيمة", options);
-      } catch (error) {
-        console.warn("تعذر عرض إشعار الموقع:", error);
-        setStatus(els.geofenceStatus, "تعذر عرض الإشعار. تحقق من إذن الإشعارات.", true);
-      }
-    }
-
     function handleGeolocation(position) {
-      const { latitude, longitude } = position.coords;
-      const distance = distanceInMeters(
-        latitude,
-        longitude,
-        GEO_TARGET.lat,
-        GEO_TARGET.lon
-      );
-
-      let wasInside = false;
-      try {
-        wasInside = localStorage.getItem(GEOFENCE_STORAGE_KEY) === "1";
-      } catch (error) {
-        console.warn("تعذر قراءة حالة مراقبة الموقع:", error);
-      }
-
-      if (distance <= GEOFENCE_RADIUS_METERS && !wasInside) {
-        try {
-          localStorage.setItem(GEOFENCE_STORAGE_KEY, "1");
-        } catch (error) {
-          console.warn("تعذر حفظ حالة مراقبة الموقع:", error);
-        }
-
-        setStatus(els.geofenceStatus, "تم رصد الاقتراب من منتجع الخيمة.", false);
-        notifyGeofenceArrival();
-      } else if (distance > GEOFENCE_RESET_METERS && wasInside) {
-        try {
-          localStorage.setItem(GEOFENCE_STORAGE_KEY, "0");
-        } catch (error) {
-          console.warn("تعذر تحديث حالة مراقبة الموقع:", error);
-        }
-
-        setStatus(els.geofenceStatus, "خرجت من نطاق الموقع؛ سيعمل التنبيه عند الاقتراب مرة أخرى.", false);
-      } else {
-        setStatus(
-          els.geofenceStatus,
-          "مراقبة الموقع نشطة. المسافة التقريبية: " + Math.round(distance) + " متر.",
-          false
-        );
-      }
+      const distance = geofenceDistanceMeters(position.coords.latitude, position.coords.longitude);
+      const inside = distance <= GEOFENCE_RADIUS_METERS;
+      localStorage.setItem(GEOFENCE_STORAGE_KEY, String(inside));
+      setStatus(els.geofenceStatus, inside ? "أنت داخل نطاق منتجع الخيمة، يمكننا تفعيل خدمات الحضور المميز." : "أنت خارج النطاق الحالي للموقع; يمكن متابعة الحجز عن بُعد.", false);
     }
 
     function handleGeolocationError(error) {
-      const messages = {
-        1: "لم يتم منح إذن الموقع. اسمح للموقع من إعدادات المتصفح.",
-        2: "تعذر تحديد موقعك. تحقق من إعدادات GPS وحاول مجدداً.",
-        3: "انتهت مهلة تحديد الموقع. حاول مجدداً."
-      };
+      console.warn("تعذر الوصول إلى الموقع:", error);
+      setStatus(els.geofenceStatus, "تعذر الوصول إلى الموقع. يمكنك الاستمرار في الحجز يدويًا.", true);
+    }
 
-      if (error.code === 1 && geolocationWatchId !== null) {
+    function startGeofenceMonitor() {
+      if (!navigator.geolocation) {
+        setStatus(els.geofenceStatus, "المتصفح لا يدعم خدمة الموقع.", true);
+        return;
+      }
+
+      if (geolocationWatchId !== null) {
         navigator.geolocation.clearWatch(geolocationWatchId);
         geolocationWatchId = null;
-        els.geofenceButton.disabled = false;
-        els.geofenceButton.textContent = "بدء مراقبة الموقع";
-      }
-
-      setStatus(
-        els.geofenceStatus,
-        messages[error.code] || "تعذر الوصول إلى موقعك.",
-        true
-      );
-    }
-
-    function startGeofenceWatch() {
-      if (geolocationWatchId !== null) return;
-
-      if (!window.isSecureContext) {
-        setStatus(els.geofenceStatus, "ميزة الموقع تتطلب HTTPS أو خادماً محلياً.", true);
+        setStatus(els.geofenceStatus, "تم إيقاف مراقبة الموقع.", false);
         return;
       }
 
-      if (!("geolocation" in navigator)) {
-        setStatus(els.geofenceStatus, "المتصفح لا يدعم تحديد الموقع.", true);
-        return;
-      }
+      geolocationWatchId = navigator.geolocation.watchPosition(handleGeolocation, handleGeolocationError, {
+        enableHighAccuracy: true,
+        maximumAge: 15000,
+        timeout: 15000
+      });
 
-      geolocationWatchId = navigator.geolocation.watchPosition(
-        handleGeolocation,
-        handleGeolocationError,
-        {
-          enableHighAccuracy: true,
-          maximumAge: 0,
-          timeout: 20000
-        }
-      );
-
-      els.geofenceButton.disabled = true;
-      els.geofenceButton.textContent = "مراقبة الموقع نشطة";
-      setStatus(
-        els.geofenceStatus,
-        "مراقبة الموقع نشطة؛ سيظهر تنبيه عند الاقتراب من منتجع الخيمة.",
-        false
-      );
+      setStatus(els.geofenceStatus, "جاري مراقبة الموقع…", false);
     }
 
-    async function autoStartGeofenceIfAlreadyAllowed() {
-      if (
-        !("Notification" in window) ||
-        Notification.permission !== "granted" ||
-        !("geolocation" in navigator)
-      ) {
-        return;
-      }
-
-      try {
-        if (navigator.permissions && navigator.permissions.query) {
-          const permission = await navigator.permissions.query({ name: "geolocation" });
-
-          if (permission.state === "granted") {
-            startGeofenceWatch();
-          }
-        }
-      } catch (error) {
-        console.info("ابدأ مراقبة الموقع باستخدام الزر.", error);
-      }
-    }
-
-    els.activate.addEventListener("click", activatePass);
-    els.download.addEventListener("click", downloadCard);
-
-    els.invite.addEventListener("click", () => {
-      window.open(inviteUrl(), "_blank", "noopener,noreferrer");
-    });
-
-    els.notify.addEventListener("click", async () => {
+    function handleNotificationToggle() {
       if (!("Notification" in window)) {
-        setStatus(els.vipStatus, "هذا المتصفح لا يدعم الإشعارات.", true);
+        setStatus(els.vipStatus, "المتصفح لا يدعم الإشعارات.", true);
         return;
       }
 
-      try {
-        const permission = await Notification.requestPermission();
-
+      Notification.requestPermission().then(permission => {
         if (permission === "granted") {
-          setStatus(els.vipStatus, "تم تفعيل الإشعارات على هذا الجهاز.", false);
-          await showLocalNotification(
-            "إشعارات منتجع الخيمة",
-            "تم تفعيل الإشعارات على هذا الجهاز."
-          );
+          setStatus(els.vipStatus, "تم تفعيل الإشعارات بنجاح.", false);
+          document.getElementById("notifyButton").textContent = "الإشعارات مفعّلة";
         } else {
-          setStatus(els.vipStatus, "لم يتم منح إذن الإشعارات.", true);
+          setStatus(els.vipStatus, "تم رفض الإشعارات، يمكنك الاستمرار بشكل يدوي.", true);
         }
-      } catch (error) {
-        setStatus(els.vipStatus, "تعذر طلب إذن الإشعارات من المتصفح.", true);
-      }
-    });
-
-    els.geofenceButton.addEventListener("click", async () => {
-      if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-        setStatus(
-          els.geofenceStatus,
-          "هذا المتصفح لا يدعم إشعارات Service Worker المطلوبة.",
-          true
-        );
-        return;
-      }
-
-      try {
-        const notificationPermission = await Notification.requestPermission();
-
-        if (notificationPermission !== "granted") {
-          setStatus(els.geofenceStatus, "اسمح بالإشعارات لتلقي تنبيه الاقتراب.", true);
-          return;
-        }
-
-        startGeofenceWatch();
-      } catch (error) {
-        setStatus(
-          els.geofenceStatus,
-          "تعذر تفعيل المراقبة. تحقق من أذونات الموقع والإشعارات.",
-          true
-        );
-      }
-    });
-
-    els.bookingForm.addEventListener("submit", event => {
-      event.preventDefault();
-
-      if (!els.bookingForm.reportValidity()) return;
-
-      const formData = new FormData(els.bookingForm);
-      const name = String(formData.get("name") || "").trim();
-      const guests = String(formData.get("guests") || "").trim();
-      const date = String(formData.get("date") || "").trim();
-      const time = String(formData.get("time") || "").trim();
-      const sessionType = String(formData.get("sessionType") || "").trim();
-      const notes = String(formData.get("notes") || "").trim();
-
-      const message = [
-        "طلب حجز جديد - منتجع الخيمة",
-        "الاسم: " + name,
-        "عدد الضيوف: " + guests,
-        "التاريخ: " + date,
-        "الوقت: " + time,
-        "نوع الجلسة: " + sessionType,
-        "رقم عضوية VIP: " + (currentPass ? currentPass.memberId : "غير مفعّلة"),
-        "هدية صندوق الضيافة: " + (currentPass ? currentPass.gift : "لا توجد"),
-        "ملاحظات: " + (notes || "لا توجد")
-      ].join("\n");
-
-      const url =
-        "https://wa.me/" +
-        WHATSAPP_NUMBER +
-        "?text=" +
-        encodeURIComponent(message);
-
-      window.open(url, "_blank", "noopener,noreferrer");
-      setStatus(els.bookingStatus, "تم فتح واتساب برسالة الحجز. أرسل الرسالة لتأكيد الطلب.", false);
-    });
-
-    renderPass(readPass());
-
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js", { scope: "./" })
-          .catch(error => console.warn("تعذر تسجيل Service Worker:", error));
       });
     }
 
-    autoStartGeofenceIfAlreadyAllowed();
+    els.activate.addEventListener("click", activatePass);
+    els.download.addEventListener("click", handleDownloadCard);
+    els.invite.addEventListener("click", inviteFriends);
+    els.bookingForm.addEventListener("submit", sendBookingMessage);
+    els.notify.addEventListener("click", handleNotificationToggle);
+    els.geofenceButton.addEventListener("click", startGeofenceMonitor);
+
+    currentPass = readPass();
+    renderPass(currentPass);
   </script>
 </body>
 </html>
