@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "montaja-alkhaymah-vip-v4";
+const CACHE_NAME = "montaja-alkhaymah-vip-v5";
 const APP_FILES = ["./", "./index.html", "./manifest.json", "./icon.svg"];
 
 function scopedUrl(path) {
@@ -13,68 +13,96 @@ function enhancePage(html) {
   const styles = `
     <style data-alkhaymah-gallery>
       html { scroll-padding-top: 110px; }
-      .kh-gallery { margin:28px 0; padding:clamp(18px,3vw,30px); border:1px solid rgba(215,182,109,.55); border-radius:26px; background:linear-gradient(145deg,#fffdf8,#f2ead8); box-shadow:0 18px 40px rgba(19,41,34,.12); }
+      .kh-gallery { grid-column:1 / -1; margin:0; padding:clamp(18px,3vw,30px); border:1px solid rgba(215,182,109,.55); border-radius:26px; background:linear-gradient(145deg,#fffdf8,#f2ead8); box-shadow:0 18px 40px rgba(19,41,34,.10); }
       .kh-gallery h2 { margin:0 0 6px; color:#183c32; font-size:clamp(1.5rem,3vw,2.25rem); }
       .kh-gallery-lead { margin:0 0 18px; color:#5e6d66; }
       .kh-photo-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
-      .kh-photo-card { overflow:hidden; min-width:0; border:1px solid rgba(215,182,109,.45); border-radius:18px; background:#fff; box-shadow:0 10px 24px rgba(24,60,50,.09); }
-      .kh-photo-card img { display:block; width:100%; height:220px; object-fit:cover; background:#e9dfc9; }
+      .kh-photo-card { overflow:hidden; min-width:0; margin:0; border:1px solid rgba(215,182,109,.55); border-radius:18px; background:#fff; box-shadow:0 10px 24px rgba(24,60,50,.09); }
+      .kh-photo-button { display:block; width:100%; padding:0; border:0; background:#e9dfc9; cursor:zoom-in; }
+      .kh-photo-card img { display:block; width:100%; height:220px; object-fit:cover; }
       .kh-photo-card figcaption { padding:11px 13px; color:#183c32; font-weight:800; }
-      .kh-menu-title { margin:26px 0 12px; color:#183c32; font-size:1.35rem; }
-      .kh-menu-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
-      .kh-menu-card img { height:170px; }
-      .kh-menu-card figcaption { display:flex; justify-content:space-between; gap:8px; }
-      .kh-menu-card figcaption span:last-child { color:#9a7025; white-space:nowrap; }
-      @media(max-width:850px) { .kh-photo-grid,.kh-menu-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-      @media(max-width:520px) { .kh-photo-grid,.kh-menu-grid { grid-template-columns:1fr; } .kh-photo-card img,.kh-menu-card img { height:230px; } }
+      .kh-lightbox { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:24px; background:rgba(9,14,12,.92); }
+      .kh-lightbox[hidden] { display:none; }
+      .kh-lightbox img { display:block; max-width:min(94vw,1400px); max-height:86vh; width:auto; height:auto; object-fit:contain; border:2px solid rgba(215,182,109,.85); border-radius:12px; box-shadow:0 20px 70px rgba(0,0,0,.45); }
+      .kh-lightbox-close { position:absolute; top:14px; inset-inline-end:18px; width:48px; height:48px; border:1px solid rgba(241,217,162,.7); border-radius:50%; color:#fff; background:rgba(24,60,50,.9); font-size:1.8rem; cursor:pointer; }
+      .kh-lightbox-caption { position:absolute; bottom:14px; max-width:90vw; color:#fff; text-align:center; text-shadow:0 2px 8px #000; }
+      @media(max-width:850px) { .kh-photo-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+      @media(max-width:520px) { .kh-photo-grid { grid-template-columns:1fr; } .kh-photo-card img { height:230px; } .kh-lightbox { padding:12px; } }
     </style>`;
 
-  const photo = (url, alt, label, menu = false) => `<figure class="kh-photo-card${menu ? " kh-menu-card" : ""}"><img loading="lazy" decoding="async" src="${url}" alt="${alt}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&amp;fit=crop&amp;w=1200&amp;q=80';"><figcaption>${label}</figcaption></figure>`;
+  const photos = [
+    ["food1.jpg", "مائدة الضيافة والأطباق الشرقية", "مائدة الضيافة"],
+    ["food2.jpg", "تشكيلة مشويات من مطبخ الخيمة", "مشويات الخيمة"],
+    ["place1.jpg", "أجواء الجلسات الخارجية في المنتجع", "أجواء المنتجع"],
+    ["menu1.jpg", "قائمة الضيافة في منتجع الخيمة", "قائمة الضيافة"]
+  ];
+  const cards = photos.map(([src, alt, label]) => `
+        <figure class="kh-photo-card">
+          <button class="kh-photo-button" type="button" aria-label="تكبير الصورة: ${label}">
+            <img loading="lazy" decoding="async" src="./${src}" alt="${alt}">
+          </button>
+          <figcaption>${label}</figcaption>
+        </figure>`).join("");
   const gallery = `
     <section class="kh-gallery" id="gallery" aria-labelledby="galleryTitle">
-      <h2 id="galleryTitle">صور من أجواء الخيمة وضيافتها</h2>
-      <p class="kh-gallery-lead">جلسات دافئة ومذاقات شرقية أصيلة، في أجواء صُممت لتجمع الأحباب.</p>
-      <div class="kh-photo-grid">
-        ${photo("https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "جلسة خيمة مضاءة في أجواء ليلية دافئة", "جلسات الخيمة الفاخرة")}
-        ${photo("https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "مشويات شهية على الفحم", "مشويات على الفحم")}
-        ${photo("https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "طبق شرقي غني بالمذاقات", "أطباق شرقية مختارة")}
-        ${photo("https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "قهوة ساخنة تقدم للضيوف", "قهوة الضيافة")}
+      <h2 id="galleryTitle">أجواء المنتجع وقائمة الضيافة</h2>
+      <p class="kh-gallery-lead">اكتشف أطباقنا وأجواء جلساتنا، واضغط على أي صورة لمشاهدتها بوضوح.</p>
+      <div class="kh-photo-grid">${cards}
       </div>
-      <h3 class="kh-menu-title">من قائمة الضيافة</h3>
-      <div class="kh-menu-grid">
-        ${photo("https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "كباب وكفتة مشوية", "كباب وكفتة", true)}
-        ${photo("https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "طاجن شرقي ومقبلات", "طواجن ومقبلات", true)}
-        ${photo("https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "حلويات شرقية شهية", "حلويات شرقية", true)}
-        ${photo("https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&amp;fit=crop&amp;w=1200&amp;q=85", "شاي ساخن للضيافة", "شاي على الجمر", true)}
-      </div>
-    </section>`;
+    </section>
+    <div class="kh-lightbox" id="khLightbox" role="dialog" aria-modal="true" aria-label="عرض الصورة" hidden>
+      <button class="kh-lightbox-close" type="button" aria-label="إغلاق الصورة">×</button>
+      <img alt="" src="">
+      <div class="kh-lightbox-caption" aria-live="polite"></div>
+    </div>`;
+  const lightboxScript = `
+    <script data-alkhaymah-gallery>
+      (() => {
+        const modal = document.getElementById("khLightbox");
+        if (!modal) return;
+        const image = modal.querySelector("img");
+        const caption = modal.querySelector(".kh-lightbox-caption");
+        const closeButton = modal.querySelector(".kh-lightbox-close");
+        let lastTrigger = null;
+        const close = () => {
+          modal.hidden = true;
+          document.body.style.overflow = "";
+          if (lastTrigger) lastTrigger.focus();
+        };
+        document.querySelectorAll(".kh-photo-button").forEach(button => {
+          button.addEventListener("click", () => {
+            const thumb = button.querySelector("img");
+            lastTrigger = button;
+            image.src = thumb.currentSrc || thumb.src;
+            image.alt = thumb.alt;
+            caption.textContent = thumb.closest("figure").querySelector("figcaption").textContent;
+            modal.hidden = false;
+            document.body.style.overflow = "hidden";
+            closeButton.focus();
+          });
+        });
+        closeButton.addEventListener("click", close);
+        modal.addEventListener("click", event => { if (event.target === modal) close(); });
+        document.addEventListener("keydown", event => {
+          if (!modal.hidden && event.key === "Escape") close();
+        });
+      })();
+    </script>`;
 
   let result = html.replace("</style>", styles + "\n</style>");
-  const heroStart = result.indexOf('<section class="hero"');
-  if (heroStart !== -1) {
-    const heroEnd = result.indexOf("</section>", heroStart);
-    if (heroEnd !== -1) {
-      const insertAt = heroEnd + "</section>".length;
-      result = result.slice(0, insertAt) + "\n" + gallery + "\n" + result.slice(insertAt);
-    }
-  }
+  result = result.replace(
+    /<div class="note">[\s\S]*?<\/div>/,
+    '<div class="note">تُحفظ بطاقتك تلقائياً على جهازك.</div>'
+  );
+  result = result.replace("عائلة من الرياض", "ضيوف من المنيا");
+  result = result.replace(/<div class="map-box">[\s\S]*?<\/div>/, "");
 
-  // Repair a naked JavaScript tail if an earlier edit left it outside a script element.
-  const footerAt = result.indexOf("</footer>");
-  if (footerAt !== -1) {
-    const tailStart = result.search(/(?:printWindow\.document\.close\(\)|function inviteFriends\s*\()/g);
-    if (tailStart > footerAt) {
-      const precedingOpen = result.lastIndexOf("<script", tailStart);
-      const precedingClose = result.lastIndexOf("</script>", tailStart);
-      if (precedingClose > precedingOpen) {
-        result = result.slice(0, tailStart) + "<script>\n" + result.slice(tailStart);
-        const bodyClose = result.lastIndexOf("</body>");
-        if (bodyClose !== -1) result = result.slice(0, bodyClose) + "</script>\n" + result.slice(bodyClose);
-      }
-    }
-  }
+  const bookingMarker = '<section class="panel" id="booking"';
+  const bookingAt = result.indexOf(bookingMarker);
+  if (bookingAt !== -1) result = result.slice(0, bookingAt) + gallery + "\n      " + result.slice(bookingAt);
+  result = result.replace("</body>", lightboxScript + "\n</body>");
 
-  // Keep the site's interface entirely in Arabic without changing its identifiers or behavior.
+  // Keep the site's existing Arabic presentation substitutions.
   result = result.replaceAll("Club Experience", "تجربة الضيافة").replaceAll("VIP", "النخبة");
   return result;
 }
