@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183c32">
+  <meta name="description" content="عضوية VIP وحجز الجلسات في منتجع الخيمة">
+  <title>منتجع الخيمة | عضوية VIP والحجز</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+
+  <style>
+    :root {
+      color-scheme: light;
+      --green: #183c32;
+      --green-light: #245746;
+      --gold: #d7b66d;
+      --cream: #f7f3e9;
+      --ink: #1d2924;
+      --muted: #65736c;
+      --white: #fff;
+      --border: #e4e6df;
+      --danger: #a63d37;
+      --shadow: 0 14px 40px rgba(24, 60, 50, .10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: Tahoma, Arial, sans-serif;
+      line-height: 1.7;
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    .topbar {
+      background: var(--green);
+      color: var(--white);
+      padding: 18px 20px;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .topbar-inner, main {
+      width: min(1050px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand { margin: 0; font-size: 1.35rem; }
+    .brand span { color: var(--gold); }
+    .topbar p { margin: 3px 0 0; color: #e5e9e5; font-size: .92rem; }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    main { padding: 30px 0 48px; }
+    .intro { margin-bottom: 24px; }
+    .intro h2 { margin: 0 0 5px; font-size: 1.55rem; }
+    .intro p { color: var(--muted); margin: 0; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2 { margin: 0 0 6px; font-size: 1.2rem; }
+    .panel-lead { color: var(--muted); margin: 0 0 18px; font-size: .94rem; }
+
+    .vip-card {
+      min-height: 230px;
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(215, 182, 109, .6);
+      color: var(--white);
+      background:
+        radial-gradient(circle at 12% 100%, rgba(215,182,109,.22), transparent 32%),
+        linear-gradient(135deg, #1d4b3d, #102c25);
+      display: grid;
+      grid-template-columns: 1fr 132px;
+      gap: 14px;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .vip-card h3 { margin: 0 0 2px; color: var(--gold); font-size: 1.25rem; }
+    .vip-card .card-label { margin: 0 0 20px; color: #e9eee9; font-size: .85rem; }
+    .member-id {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      direction: ltr;
+      text-align: right;
+    }
+    .member-name, .gift-line { margin: 5px 0 0; font-size: .9rem; color: #f2f2eb; }
+    .gift-line strong { color: var(--gold); }
+
+    .qr-box {
+      width: 124px;
+      height: 124px;
+      background: #fff;
+      padding: 7px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    #qrcode canvas, #qrcode img {
+      display: block;
+      max-width: 110px;
+      max-height: 110px;
+    }
+
+    .qr-placeholder { color: #59645d; font-size: .72rem; text-align: center; }
+
+    .field { margin: 14px 0; }
+    label { display: block; font-weight: 700; margin-bottom: 6px; font-size: .93rem; }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #cfd6d0;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green-light);
+      box-shadow: 0 0 0 3px rgba(36, 87, 70, .12);
+    }
+
+    textarea { min-height: 92px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      min-height: 44px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform .15s ease, opacity .15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-gold { background: var(--gold); color: #2b281f; }
+    .btn-light { background: #eef2ee; color: var(--green); border: 1px solid #d8e0d9; }
+    .btn-whatsapp { background: #168b52; color: #fff; }
+
+    .status { min-height: 24px; margin: 12px 0 0; color: var(--muted); font-size: .9rem; }
+    .status.error { color: var(--danger); }
+
+    .note {
+      margin-top: 14px;
+      padding: 11px 13px;
+      background: #f7f5ed;
+      border-right: 3px solid var(--gold);
+      border-radius: 8px;
+      color: #5f5a4b;
+      font-size: .85rem;
+    }
+
+    .map-box {
+      background: #f5f7f4;
+      border: 1px dashed #c7d1c9;
+      border-radius: 12px;
+      padding: 13px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 0 16px 28px;
+      font-size: .85rem;
+    }
+
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .topbar-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 420px) {
+      .panel { padding: 17px; }
+      .vip-card { grid-template-columns: 1fr 102px; padding: 16px; }
+      .qr-box { width: 98px; height: 98px; padding: 5px; }
+      #qrcode canvas, #qrcode img { max-width: 88px; max-height: 88px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <h1 class="brand">منتجع الخيمة <span>VIP</span></h1>
+        <p>عضويتك الخاصة وحجز جلستك</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-gold" id="notifyButton" type="button">تفعيل الإشعارات</button>
+        <button class="btn btn-light" id="geofenceButton" type="button">بدء مراقبة الموقع</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>مرحباً بك في منتجع الخيمة</h2>
+      <p>فعّل بطاقة VIP، احصل على هديتك، ثم أرسل تفاصيل حجزك مباشرةً عبر واتساب.</p>
+    </section>
+
+    <div class="grid">
+      <section class="panel" aria-labelledby="vipHeading">
+        <h2 id="vipHeading">بطاقة عضوية VIP</h2>
+        <p class="panel-lead">تُحفظ بيانات العضوية والهدية على هذا الجهاز.</p>
+
+        <div class="vip-card" id="vipCard">
+          <div>
+            <h3>منتجع الخيمة</h3>
+            <p class="card-label">بطاقة عضوية VIP</p>
+            <div class="member-id" id="memberId">KH-2026-----</div>
+            <p class="member-name" id="memberName">لم يتم تفعيل البطاقة بعد</p>
+            <p class="gift-line">هدية صندوق الضيافة: <strong id="giftName">بانتظار التفعيل</strong></p>
+          </div>
+          <div class="qr-box">
+            <div id="qrcode"><span class="qr-placeholder">يظهر رمز QR بعد التفعيل</span></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="vipName">الاسم على البطاقة</label>
+          <input id="vipName" type="text" maxlength="60" autocomplete="name" placeholder="اكتب اسمك">
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="activateButton" type="button">تفعيل البطاقة والحصول على هدية</button>
+          <button class="btn btn-light" id="downloadButton" type="button" disabled>تحميل البطاقة كصورة</button>
+          <button class="btn btn-whatsapp" id="inviteButton" type="button">دعوة الأصدقاء عبر واتساب</button>
+        </div>
+
+        <p class="status" id="vipStatus" aria-live="polite"></p>
+        <p class="status" id="geofenceStatus" aria-live="polite"></p>
+
+        <div class="note">
+          رمز QR يتضمن رقم العضوية فقط. بيانات العضوية محفوظة محلياً في المتصفح تحت المفتاح
+          <b>alkhaymah_vip_pass</b>.
+        </div>
+      </section>
+
+      <section class="panel" id="booking" aria-labelledby="bookingHeading">
+        <h2 id="bookingHeading">نموذج الحجز المباشر</h2>
+        <p class="panel-lead">املأ بيانات الجلسة وسنجهز رسالة الحجز لك في واتساب.</p>
+
+        <form id="bookingForm">
+          <div class="field">
+            <label for="bookingName">الاسم</label>
+            <input id="bookingName" name="name" type="text" maxlength="80" autocomplete="name" required>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="guests">عدد الضيوف</label>
+              <input id="guests" name="guests" type="number" min="1" max="100" step="1" value="2" required>
+            </div>
+            <div class="field">
+              <label for="sessionType">نوع الجلسة</label>
+              <select id="sessionType" name="sessionType" required>
+                <option value="عائلات">عائلات</option>
+                <option value="شباب">شباب</option>
+                <option value="عزومة">عزومة</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="bookingDate">التاريخ</label>
+              <input id="bookingDate" name="date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="bookingTime">الوقت</label>
+              <input id="bookingTime" name="time" type="time" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="bookingNotes">ملاحظات</label>
+            <textarea id="bookingNotes" name="notes" maxlength="1000" placeholder="أي تفاصيل إضافية ترغب بإضافتها"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">إرسال تفاصيل الحجز إلى واتساب</button>
+            <a class="btn btn-light" id="mapButton" href="#" target="_blank" rel="noopener noreferrer">
+              فتح الموقع على خرائط Google
+            </a>
+          </div>
+
+          <p class="status" id="bookingStatus" aria-live="polite"></p>
+          <div class="map-box">موقع منتجع الخيمة: 28.324413, 30.701297</div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer>منتجع الخيمة · بطاقة VIP والحجوزات</footer>
+
+  <!-- يلزم اتصال بالإنترنت لتحميل مكتبة QR. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    "use strict";
+
+    const STORAGE_KEY = "alkhaymah_vip_pass";
+    const WHATSAPP_NUMBER = "201020014584";
+    const MAPS_QUERY = "28.324413,30.701297";
+    const GEO_TARGET = { lat: 28.324413, lon: 30.701297 };
+    const GEOFENCE_RADIUS_METERS = 150;
+    const GEOFENCE_RESET_METERS = 250;
+    const GEOFENCE_STORAGE_KEY = "alkhaymah_geofence_inside";
+
+    const gifts = [
+      "قهوة عربية فاخرة",
+      "حلوى شرقية",
+      "ضيافة مجانية لشخص واحد",
+      "ترقية الجلسة حسب التوفر",
+      "شاي ملكي",
+      "خصم خاص على الزيارة القادمة"
+    ];
+
+    const els = {
+      memberId: document.getElementById("memberId"),
+      memberName: document.getElementById("memberName"),
+      giftName: document.getElementById("giftName"),
+      qr: document.getElementById("qrcode"),
+      vipName: document.getElementById("vipName"),
+      activate: document.getElementById("activateButton"),
+      download: document.getElementById("downloadButton"),
+      invite: document.getElementById("inviteButton"),
+      vipStatus: document.getElementById("vipStatus"),
+      geofenceStatus: document.getElementById("geofenceStatus"),
+      bookingForm: document.getElementById("bookingForm"),
+      bookingStatus: document.getElementById("bookingStatus"),
+      notify: document.getElementById("notifyButton"),
+      geofenceButton: document.getElementById("geofenceButton"),
+      map: document.getElementById("mapButton"),
+      bookingDate: document.getElementById("bookingDate")
+    };
+
+    let currentPass = null;
+    let geolocationWatchId = null;
+
+    els.map.href =
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(MAPS_QUERY);
+
+    // منع اختيار تاريخ سابق للحجز.
+    const today = new Date();
+    const localToday = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0")
+    ].join("-");
+    els.bookingDate.min = localToday;
+
+    function setStatus(element, message, isError) {
+      element.textContent = message || "";
+      element.classList.toggle("error", Boolean(isError));
+    }
+
+    function readPass() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+
+        if (
+          parsed &&
+          typeof parsed.memberId === "string" &&
+          typeof parsed.gift === "string"
+        ) {
+          return parsed;
+        }
+      } catch (error) {
+        console.warn("تعذر قراءة بيانات العضوية:", error);
+      }
+
+      return null;
+    }
+
+    function savePass(pass) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(pass));
+        return true;
+      } catch (error) {
+        console.error("تعذر حفظ بيانات العضوية:", error);
+        return false;
+      }
+    }
+
+    function makeMemberId() {
+      const year = new Date().getFullYear();
+      const digits = Math.floor(1000 + Math.random() * 9000);
+      return "KH-" + year + "-" + digits;
+    }
+
+    function renderQr(memberId) {
+      els.qr.replaceChildren();
+
+      if (typeof QRCode === "undefined") {
+        const fallback = document.createElement("span");
+        fallback.className = "qr-placeholder";
+        fallback.textContent = "تعذر تحميل مكتبة QR. تحقق من الاتصال بالإنترنت.";
+        els.qr.appendChild(fallback);
+        return false;
+      }
+
+      new QRCode(els.qr, {
+        text: memberId,
+        width: 110,
+        height: 110,
+        colorDark: "#183c32",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      return true;
+    }
+
+    function renderPass(pass) {
+      currentPass = pass;
+
+      if (!pass) {
+        els.memberId.textContent = "KH-" + new Date().getFullYear() + "-----";
+        els.memberName.textContent = "لم يتم تفعيل البطاقة بعد";
+        els.giftName.textContent = "بانتظار التفعيل";
+        els.qr.innerHTML = '<span class="qr-placeholder">يظهر رمز QR بعد التفعيل</span>';
+        els.download.disabled = true;
+        els.activate.disabled = false;
+        return;
+      }
+
+      els.memberId.textContent = pass.memberId;
+      els.memberName.textContent = pass.name ? "العضو: " + pass.name : "عضو VIP";
+      els.giftName.textContent = pass.gift;
+      if (pass.name) els.vipName.value = pass.name;
+
+      renderQr(pass.memberId);
+      els.download.disabled = false;
+      els.activate.disabled = true;
+      setStatus(els.vipStatus, "بطاقتك مفعّلة ومحفوظة على هذا الجهاز.", false);
+    }
+
+    function activatePass() {
+      if (currentPass) {
+        setStatus(els.vipStatus, "البطاقة مفعّلة بالفعل على هذا الجهاز.", false);
+        return;
+      }
+
+      const name = els.vipName.value.trim();
+      const gift = gifts[Math.floor(Math.random() * gifts.length)];
+      const pass = {
+        memberId: makeMemberId(),
+        name,
+        gift,
+        activatedAt: new Date().toISOString()
+      };
+
+      if (!savePass(pass)) {
+        setStatus(els.vipStatus, "تعذر حفظ البطاقة. تحقق من إعدادات التخزين في المتصفح.", true);
+        return;
+      }
+
+      renderPass(pass);
+      setStatus(els.vipStatus, "تم تفعيل البطاقة! هديتك الفورية: " + gift, false);
+      showLocalNotification("تم تفعيل عضوية VIP", "هديتك: " + gift);
+    }
+
+    function inviteUrl() {
+      const id = currentPass ? currentPass.memberId : "";
+      const message =
+        "أدعوك لزيارة منتجع الخيمة والاستمتاع بتجربة مميزة." +
+        (id ? " رقم عضويتي VIP: " + id : "");
+
+      return "https://wa.me/?text=" + encodeURIComponent(message);
+    }
+
+    function downloadCard() {
+      if (!currentPass) {
+        setStatus(els.vipStatus, "فعّل البطاقة أولاً لتحميلها.", true);
+        return;
+      }
+
+      const qrCanvas = els.qr.querySelector("canvas");
+      if (!qrCanvas) {
+        setStatus(els.vipStatus, "رمز QR غير جاهز. تحقق من الاتصال ثم أعد تحميل الصفحة.", true);
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200;
+      canvas.height = 720;
+      const ctx = canvas.getContext("2d");
+
+      const gradient = ctx.createLinearGradient(0, 0, 1200, 720);
+      gradient.addColorStop(0, "#245746");
+      gradient.addColorStop(1, "#102c25");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#d7b66d";
+      ctx.lineWidth = 7;
+      ctx.strokeRect(24, 24, 1152, 672);
+
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#d7b66d";
+      ctx.font = "bold 58px Tahoma, Arial";
+      ctx.fillText("منتجع الخيمة", 1080, 130);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "34px Tahoma, Arial";
+      ctx.fillText("بطاقة عضوية VIP", 1080, 190);
+
+      ctx.direction = "ltr";
+      ctx.textAlign = "left";
+      ctx.font = "bold 52px Arial";
+      ctx.fillText(currentPass.memberId, 90, 330);
+
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+      ctx.font = "32px Tahoma, Arial";
+      ctx.fillText(currentPass.name ? "العضو: " + currentPass.name : "عضو VIP", 1080, 410);
+
+      ctx.fillStyle = "#d7b66d";
+      ctx.font = "bold 31px Tahoma, Arial";
+      ctx.fillText("هدية صندوق الضيافة", 1080, 500);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "28px Tahoma, Arial";
+      ctx.fillText(currentPass.gift, 1080, 550);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(90, 425, 230, 230);
+      ctx.drawImage(qrCanvas, 100, 435, 210, 210);
+
+      const link = document.createElement("a");
+      link.download = "alkhaymah-vip-" + currentPass.memberId + ".png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+
+      setStatus(els.vipStatus, "تم تجهيز صورة البطاقة للتنزيل.", false);
+    }
+
+    async function showLocalNotification(title, body) {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+      const options = {
+        body,
+        data: {
+          url: location.href,
+          inviteUrl: inviteUrl()
+        },
+        actions: [
+          { action: "book", title: "الحجز" },
+          { action: "invite", title: "دعوة صديق" }
+        ]
+      };
+
+      try {
+        if ("serviceWorker" in navigator) {
+          const registration = await navigator.serviceWorker.ready;
+          await registration.showNotification(title, options);
+        } else {
+          new Notification(title, { body });
+        }
+      } catch (error) {
+        console.warn("تعذر عرض الإشعار:", error);
+      }
+    }
+
+    function distanceInMeters(lat1, lon1, lat2, lon2) {
+      const earthRadius = 6371000;
+      const toRadians = degrees => degrees * Math.PI / 180;
+      const dLat = toRadians(lat2 - lat1);
+      const dLon = toRadians(lon2 - lon1);
+
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) ** 2;
+
+      return 2 * earthRadius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    async function notifyGeofenceArrival() {
+      const options = {
+        body: "أنت بالقرب من منتجع الخيمة. يسعدنا استقبالُك.",
+        data: {
+          url: location.href,
+          inviteUrl: inviteUrl()
+        },
+        actions: [
+          { action: "book", title: "الحجز" },
+          { action: "invite", title: "دعوة صديق" }
+        ],
+        tag: "alkhaymah-arrival",
+        renotify: false
+      };
+
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        await registration.showNotification("منتجع الخيمة", options);
+      } catch (error) {
+        console.warn("تعذر عرض إشعار الموقع:", error);
+        setStatus(els.geofenceStatus, "تعذر عرض الإشعار. تحقق من إذن الإشعارات.", true);
+      }
+    }
+
+    function handleGeolocation(position) {
+      const { latitude, longitude } = position.coords;
+      const distance = distanceInMeters(
+        latitude,
+        longitude,
+        GEO_TARGET.lat,
+        GEO_TARGET.lon
+      );
+
+      let wasInside = false;
+      try {
+        wasInside = localStorage.getItem(GEOFENCE_STORAGE_KEY) === "1";
+      } catch (error) {
+        console.warn("تعذر قراءة حالة مراقبة الموقع:", error);
+      }
+
+      if (distance <= GEOFENCE_RADIUS_METERS && !wasInside) {
+        try {
+          localStorage.setItem(GEOFENCE_STORAGE_KEY, "1");
+        } catch (error) {
+          console.warn("تعذر حفظ حالة مراقبة الموقع:", error);
+        }
+
+        setStatus(els.geofenceStatus, "تم رصد الاقتراب من منتجع الخيمة.", false);
+        notifyGeofenceArrival();
+      } else if (distance > GEOFENCE_RESET_METERS && wasInside) {
+        try {
+          localStorage.setItem(GEOFENCE_STORAGE_KEY, "0");
+        } catch (error) {
+          console.warn("تعذر تحديث حالة مراقبة الموقع:", error);
+        }
+
+        setStatus(els.geofenceStatus, "خرجت من نطاق الموقع؛ سيعمل التنبيه عند الاقتراب مرة أخرى.", false);
+      } else {
+        setStatus(
+          els.geofenceStatus,
+          "مراقبة الموقع نشطة. المسافة التقريبية: " + Math.round(distance) + " متر.",
+          false
+        );
+      }
+    }
+
+    function handleGeolocationError(error) {
+      const messages = {
+        1: "لم يتم منح إذن الموقع. اسمح للموقع من إعدادات المتصفح.",
+        2: "تعذر تحديد موقعك. تحقق من إعدادات GPS وحاول مجدداً.",
+        3: "انتهت مهلة تحديد الموقع. حاول مجدداً."
+      };
+
+      if (error.code === 1 && geolocationWatchId !== null) {
+        navigator.geolocation.clearWatch(geolocationWatchId);
+        geolocationWatchId = null;
+        els.geofenceButton.disabled = false;
+        els.geofenceButton.textContent = "بدء مراقبة الموقع";
+      }
+
+      setStatus(
+        els.geofenceStatus,
+        messages[error.code] || "تعذر الوصول إلى موقعك.",
+        true
+      );
+    }
+
+    function startGeofenceWatch() {
+      if (geolocationWatchId !== null) return;
+
+      if (!window.isSecureContext) {
+        setStatus(els.geofenceStatus, "ميزة الموقع تتطلب HTTPS أو خادماً محلياً.", true);
+        return;
+      }
+
+      if (!("geolocation" in navigator)) {
+        setStatus(els.geofenceStatus, "المتصفح لا يدعم تحديد الموقع.", true);
+        return;
+      }
+
+      geolocationWatchId = navigator.geolocation.watchPosition(
+        handleGeolocation,
+        handleGeolocationError,
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 20000
+        }
+      );
+
+      els.geofenceButton.disabled = true;
+      els.geofenceButton.textContent = "مراقبة الموقع نشطة";
+      setStatus(
+        els.geofenceStatus,
+        "مراقبة الموقع نشطة؛ سيظهر تنبيه عند الاقتراب من منتجع الخيمة.",
+        false
+      );
+    }
+
+    async function autoStartGeofenceIfAlreadyAllowed() {
+      if (
+        !("Notification" in window) ||
+        Notification.permission !== "granted" ||
+        !("geolocation" in navigator)
+      ) {
+        return;
+      }
+
+      try {
+        if (navigator.permissions && navigator.permissions.query) {
+          const permission = await navigator.permissions.query({ name: "geolocation" });
+
+          if (permission.state === "granted") {
+            startGeofenceWatch();
+          }
+        }
+      } catch (error) {
+        // عند عدم دعم استعلام الأذونات يمكن بدء المراقبة بالزر.
+        console.info("ابدأ مراقبة الموقع باستخدام الزر.", error);
+      }
+    }
+
+    els.activate.addEventListener("click", activatePass);
+    els.download.addEventListener("click", downloadCard);
+
+    els.invite.addEventListener("click", () => {
+      window.open(inviteUrl(), "_blank", "noopener,noreferrer");
+    });
+
+    els.notify.addEventListener("click", async () => {
+      if (!("Notification" in window)) {
+        setStatus(els.vipStatus, "هذا المتصفح لا يدعم الإشعارات.", true);
+        return;
+      }
+
+      try {
+        const permission = await Notification.requestPermission();
+
+        if (permission === "granted") {
+          setStatus(els.vipStatus, "تم تفعيل الإشعارات على هذا الجهاز.", false);
+          await showLocalNotification(
+            "إشعارات منتجع الخيمة",
+            "تم تفعيل الإشعارات على هذا الجهاز."
+          );
+        } else {
+          setStatus(els.vipStatus, "لم يتم منح إذن الإشعارات.", true);
+        }
+      } catch (error) {
+        setStatus(els.vipStatus, "تعذر طلب إذن الإشعارات من المتصفح.", true);
+      }
+    });
+
+    els.geofenceButton.addEventListener("click", async () => {
+      if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+        setStatus(
+          els.geofenceStatus,
+          "هذا المتصفح لا يدعم إشعارات Service Worker المطلوبة.",
+          true
+        );
+        return;
+      }
+
+      try {
+        const notificationPermission = await Notification.requestPermission();
+
+        if (notificationPermission !== "granted") {
+          setStatus(els.geofenceStatus, "اسمح بالإشعارات لتلقي تنبيه الاقتراب.", true);
+          return;
+        }
+
+        // سيظهر طلب إذن الموقع من المتصفح عند بدء watchPosition.
+        startGeofenceWatch();
+      } catch (error) {
+        setStatus(
+          els.geofenceStatus,
+          "تعذر تفعيل المراقبة. تحقق من أذونات الموقع والإشعارات.",
+          true
+        );
+      }
+    });
+
+    els.bookingForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      if (!els.bookingForm.reportValidity()) return;
+
+      const formData = new FormData(els.bookingForm);
+      const name = String(formData.get("name") || "").trim();
+      const guests = String(formData.get("guests") || "").trim();
+      const date = String(formData.get("date") || "").trim();
+      const time = String(formData.get("time") || "").trim();
+      const sessionType = String(formData.get("sessionType") || "").trim();
+      const notes = String(formData.get("notes") || "").trim();
+
+      const message = [
+        "طلب حجز جديد - منتجع الخيمة",
+        "الاسم: " + name,
+        "عدد الضيوف: " + guests,
+        "التاريخ: " + date,
+        "الوقت: " + time,
+        "نوع الجلسة: " + sessionType,
+        "رقم عضوية VIP: " + (currentPass ? currentPass.memberId : "غير مفعّلة"),
+        "هدية صندوق الضيافة: " + (currentPass ? currentPass.gift : "لا توجد"),
+        "ملاحظات: " + (notes || "لا توجد")
+      ].join("\n");
+
+      const url =
+        "https://wa.me/" +
+        WHATSAPP_NUMBER +
+        "?text=" +
+        encodeURIComponent(message);
+
+      window.open(url, "_blank", "noopener,noreferrer");
+      setStatus(els.bookingStatus, "تم فتح واتساب برسالة الحجز. أرسل الرسالة لتأكيد الطلب.", false);
+    });
+
+    renderPass(readPass());
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js", { scope: "./" })
+          .catch(error => console.warn("تعذر تسجيل Service Worker:", error));
+      });
+    }
+
+    autoStartGeofenceIfAlreadyAllowed();
+  </script>
+</body>
+</html>
