@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "montaja-alkhaymah-vip-v5";
+const CACHE_NAME = "montaja-alkhaymah-vip-v6";
 const APP_FILES = ["./", "./index.html", "./manifest.json", "./icon.svg"];
 
 function scopedUrl(path) {
@@ -13,31 +13,49 @@ function enhancePage(html) {
   const styles = `
     <style data-alkhaymah-gallery>
       html { scroll-padding-top: 110px; }
-      .kh-gallery { grid-column:1 / -1; margin:0; padding:clamp(18px,3vw,30px); border:1px solid rgba(215,182,109,.55); border-radius:26px; background:linear-gradient(145deg,#fffdf8,#f2ead8); box-shadow:0 18px 40px rgba(19,41,34,.10); }
-      .kh-gallery h2 { margin:0 0 6px; color:#183c32; font-size:clamp(1.5rem,3vw,2.25rem); }
-      .kh-gallery-lead { margin:0 0 18px; color:#5e6d66; }
-      .kh-photo-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
-      .kh-photo-card { overflow:hidden; min-width:0; margin:0; border:1px solid rgba(215,182,109,.55); border-radius:18px; background:#fff; box-shadow:0 10px 24px rgba(24,60,50,.09); }
-      .kh-photo-button { display:block; width:100%; padding:0; border:0; background:#e9dfc9; cursor:zoom-in; }
-      .kh-photo-card img { display:block; width:100%; height:220px; object-fit:cover; }
-      .kh-photo-card figcaption { padding:11px 13px; color:#183c32; font-weight:800; }
-      .kh-lightbox { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:24px; background:rgba(9,14,12,.92); }
+      .kh-gallery { grid-column:1 / -1; position:relative; isolation:isolate; overflow:hidden; margin:0; padding:clamp(20px,4vw,38px); border:1px solid rgba(215,182,109,.72); border-radius:28px; background:radial-gradient(ellipse at 10% 0%,rgba(215,182,109,.16),transparent 40%),linear-gradient(145deg,#173b31,#102820 68%,#291b14); box-shadow:0 24px 55px rgba(19,41,34,.22); }
+      .kh-gallery::before { content:""; position:absolute; inset:12px; z-index:-1; border:1px solid rgba(241,217,162,.2); border-radius:20px; pointer-events:none; }
+      .kh-gallery-head { margin:0 0 24px; text-align:center; }
+      .kh-gallery-kicker { display:inline-block; margin-bottom:8px; padding:5px 14px; border:1px solid rgba(215,182,109,.62); border-radius:999px; color:#f1d9a2; font-size:.78rem; font-weight:800; letter-spacing:.04em; }
+      .kh-gallery h2 { margin:0; color:#f1d9a2; font-size:clamp(1.55rem,3vw,2.4rem); text-shadow:0 3px 14px rgba(0,0,0,.26); }
+      .kh-gallery-lead { max-width:650px; margin:8px auto 0; color:rgba(255,255,255,.78); }
+      .kh-gallery-rule { width:92px; height:2px; margin:17px auto 0; background:linear-gradient(90deg,transparent,#d7b66d,transparent); }
+      .kh-photo-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:15px; }
+      .kh-photo-card { position:relative; overflow:hidden; min-width:0; margin:0; border:1px solid rgba(215,182,109,.6); border-radius:19px; background:#201b14; box-shadow:0 12px 25px rgba(0,0,0,.24); transition:transform .25s ease,box-shadow .25s ease; }
+      .kh-photo-card:hover { transform:translateY(-4px); box-shadow:0 18px 34px rgba(0,0,0,.34); }
+      .kh-photo-card.kh-photo-feature { grid-column:span 2; grid-row:span 2; }
+      .kh-photo-button { position:relative; display:block; width:100%; min-height:100%; padding:0; border:0; background:#201b14; cursor:zoom-in; }
+      .kh-photo-button::after { content:"تكبير الصورة  ⤢"; position:absolute; left:12px; bottom:12px; padding:5px 10px; border:1px solid rgba(241,217,162,.55); border-radius:999px; color:#fff; background:rgba(16,40,32,.8); font-size:.73rem; opacity:0; transition:opacity .2s ease; }
+      .kh-photo-button:hover::after,.kh-photo-button:focus-visible::after { opacity:1; }
+      .kh-photo-button:focus-visible { outline:3px solid #f1d9a2; outline-offset:-4px; }
+      .kh-photo-card img { display:block; width:100%; height:220px; object-fit:cover; background:#e9dfc9; transition:transform .45s ease; }
+      .kh-photo-card:hover img { transform:scale(1.035); }
+      .kh-photo-feature img { height:100%; min-height:455px; }
+      .kh-photo-card figcaption { position:absolute; inset:auto 0 0; padding:30px 14px 12px; color:#fff; font-weight:800; background:linear-gradient(transparent,rgba(8,18,14,.86)); pointer-events:none; }
+      .kh-gallery-booking { display:flex; justify-content:center; margin-top:22px; }
+      .kh-gallery-booking a { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:10px 24px; border:1px solid rgba(255,255,255,.3); border-radius:999px; color:#2a2217; background:linear-gradient(135deg,#f1d9a2,#d7b66d); box-shadow:0 10px 20px rgba(0,0,0,.2); font-weight:800; text-decoration:none; }
+      .kh-lightbox { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:56px 24px; background:rgba(7,12,10,.96); backdrop-filter:blur(8px); }
       .kh-lightbox[hidden] { display:none; }
-      .kh-lightbox img { display:block; max-width:min(94vw,1400px); max-height:86vh; width:auto; height:auto; object-fit:contain; border:2px solid rgba(215,182,109,.85); border-radius:12px; box-shadow:0 20px 70px rgba(0,0,0,.45); }
-      .kh-lightbox-close { position:absolute; top:14px; inset-inline-end:18px; width:48px; height:48px; border:1px solid rgba(241,217,162,.7); border-radius:50%; color:#fff; background:rgba(24,60,50,.9); font-size:1.8rem; cursor:pointer; }
-      .kh-lightbox-caption { position:absolute; bottom:14px; max-width:90vw; color:#fff; text-align:center; text-shadow:0 2px 8px #000; }
-      @media(max-width:850px) { .kh-photo-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-      @media(max-width:520px) { .kh-photo-grid { grid-template-columns:1fr; } .kh-photo-card img { height:230px; } .kh-lightbox { padding:12px; } }
+      .kh-lightbox img { display:block; max-width:min(94vw,1500px); max-height:84vh; width:auto; height:auto; object-fit:contain; border:2px solid rgba(215,182,109,.88); border-radius:12px; box-shadow:0 20px 70px rgba(0,0,0,.55); }
+      .kh-lightbox-close { position:absolute; top:14px; inset-inline-end:18px; width:48px; height:48px; border:1px solid rgba(241,217,162,.7); border-radius:50%; color:#fff; background:rgba(24,60,50,.92); font-size:1.8rem; cursor:pointer; }
+      .kh-lightbox-caption { position:absolute; bottom:15px; max-width:90vw; color:#f1d9a2; text-align:center; text-shadow:0 2px 8px #000; }
+      @media(max-width:850px) { .kh-photo-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .kh-photo-feature img { min-height:360px; } }
+      @media(max-width:520px) { .kh-gallery { padding:20px 16px; } .kh-photo-grid { grid-template-columns:1fr; } .kh-photo-card.kh-photo-feature { grid-column:auto; grid-row:auto; } .kh-photo-card img,.kh-photo-feature img { height:230px; min-height:0; } .kh-lightbox { padding:56px 12px; } }
+      @media(prefers-reduced-motion:reduce) { .kh-photo-card,.kh-photo-card img { transition:none; } }
     </style>`;
 
   const photos = [
-    ["food1.jpg", "مائدة الضيافة والأطباق الشرقية", "مائدة الضيافة"],
+    ["food1.jpg", "مائدة الضيافة والأطباق الشرقية", "مائدة الضيافة", true],
     ["food2.jpg", "تشكيلة مشويات من مطبخ الخيمة", "مشويات الخيمة"],
     ["place1.jpg", "أجواء الجلسات الخارجية في المنتجع", "أجواء المنتجع"],
-    ["menu1.jpg", "قائمة الضيافة في منتجع الخيمة", "قائمة الضيافة"]
+    ["menu1.jpg", "قائمة الضيافة في منتجع الخيمة", "قائمة الضيافة"],
+    ["place2.jpg", "جلسات الخيمة وسط الأشجار", "جلسات وسط الطبيعة"],
+    ["place3.jpg", "جلسة عربية داخل الخيمة التراثية", "الخيمة التراثية"],
+    ["food3.jpg", "أطباق الأرز والمشويات الطازجة", "أطباق ومشويات"],
+    ["banner2.jpg", "هوية منتجع الخيمة وموقعه", "عنوان منتجع الخيمة"]
   ];
-  const cards = photos.map(([src, alt, label]) => `
-        <figure class="kh-photo-card">
+  const cards = photos.map(([src, alt, label, featured]) => `
+        <figure class="kh-photo-card${featured ? " kh-photo-feature" : ""}">
           <button class="kh-photo-button" type="button" aria-label="تكبير الصورة: ${label}">
             <img loading="lazy" decoding="async" src="./${src}" alt="${alt}">
           </button>
@@ -45,10 +63,15 @@ function enhancePage(html) {
         </figure>`).join("");
   const gallery = `
     <section class="kh-gallery" id="gallery" aria-labelledby="galleryTitle">
-      <h2 id="galleryTitle">أجواء المنتجع وقائمة الضيافة</h2>
-      <p class="kh-gallery-lead">اكتشف أطباقنا وأجواء جلساتنا، واضغط على أي صورة لمشاهدتها بوضوح.</p>
+      <header class="kh-gallery-head">
+        <span class="kh-gallery-kicker">منتجع الخيمة · ضيافة أصيلة</span>
+        <h2 id="galleryTitle">أجواء المنتجع وقائمة الضيافة</h2>
+        <p class="kh-gallery-lead">تفاصيل الجلسات التراثية ومذاقاتنا الشرقية في تجربة ضيافة تجمع الأصالة والراحة.</p>
+        <div class="kh-gallery-rule" aria-hidden="true"></div>
+      </header>
       <div class="kh-photo-grid">${cards}
       </div>
+      <div class="kh-gallery-booking"><a href="#booking">احجز جلستك الآن</a></div>
     </section>
     <div class="kh-lightbox" id="khLightbox" role="dialog" aria-modal="true" aria-label="عرض الصورة" hidden>
       <button class="kh-lightbox-close" type="button" aria-label="إغلاق الصورة">×</button>
