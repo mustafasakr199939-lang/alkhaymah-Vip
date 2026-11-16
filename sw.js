@@ -1,6 +1,5 @@
 "use strict";
 
-// Bump the cache name when deploying a new site version to avoid stale pages.
 const CACHE_NAME = "alkhaymah-vip-v3";
 const APP_FILES = ["./", "./index.html", "./manifest.json", "./icon.svg"];
 
