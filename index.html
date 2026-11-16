@@ -1,989 +1,165 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#183c32" />
-    <meta
-      name="description"
-      content="منتجع الخيمة | عضوية VIP والحجز والضيافة"
-    />
-    <title>منتجع الخيمة | عضوية VIP</title>
-    <link rel="manifest" href="./manifest.json" />
-    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-    <style>
-      :root {
-        --green: #183c32;
-        --green-2: #245746;
-        --gold: #d7b66d;
-        --gold-soft: #f1d9a2;
-        --cream: #f7f1e4;
-        --ink: #1d2924;
-        --muted: #5e6d66;
-        --danger: #ab443d;
-      }
-
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-      body {
-        margin: 0;
-        font-family: Tahoma, Arial, sans-serif;
-        background: linear-gradient(180deg, #f6efe5, #f2ead6 45%, #f3efe6);
-        color: var(--ink);
-        line-height: 1.7;
-      }
-
-      .container {
-        width: min(980px, 92%);
-        margin: 0 auto;
-      }
-
-      .topbar {
-        background: rgba(20, 35, 31, 0.96);
-        border-bottom: 3px solid rgba(215, 182, 109, 0.85);
-        color: #fff;
-      }
-
-      .topbar-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        padding: 18px 5%;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .brand-badge {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-        color: var(--green);
-        font-weight: 800;
-      }
-
-      h1, h2, h3 { margin: 0 0 10px; }
-      h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        border: 0;
-        border-radius: 999px;
-        padding: 11px 18px;
-        text-decoration: none;
-        cursor: pointer;
-        font-weight: 700;
-        transition: transform 0.2s ease;
-      }
-      .btn:hover { transform: translateY(-1px); }
-      .btn.primary {
-        background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-        color: var(--green);
-      }
-      .btn.secondary {
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.25);
-        color: #fff;
-      }
-
-      main {
-        padding: 28px 0 60px;
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 24px;
-        align-items: center;
-        margin-top: 18px;
-      }
-
-      .eyebrow {
-        display: inline-block;
-        padding: 8px 18px;
-        background: rgba(215, 182, 109, 0.12);
-        border: 1px solid rgba(215, 182, 109, 0.55);
-        border-radius: 999px;
-        color: var(--green);
-        font-weight: 700;
-        margin-bottom: 12px;
-      }
-
-      .hero-copy h2 {
-        font-size: clamp(2rem, 5vw, 3rem);
-        color: var(--green);
-        line-height: 1.2;
-      }
-
-      .hero-copy p {
-        color: var(--muted);
-        margin: 14px 0 18px;
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-
-      .hero-card {
-        background: linear-gradient(135deg, #1d4a3d, #102c25);
-        border: 1px solid rgba(215,182,109,0.7);
-        border-radius: 26px;
-        padding: 22px;
-        color: #fff;
-        box-shadow: 0 20px 45px rgba(24, 60, 50, 0.18);
-      }
-
-      .hero-card .card-title {
-        color: var(--gold-soft);
-        font-size: 1.2rem;
-        margin-bottom: 12px;
-      }
-
-      .vip-pill {
-        display: inline-block;
-        padding: 10px 16px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
-        margin-bottom: 12px;
-        font-weight: 700;
-      }
-
-      .info-grid,
-      .offer-grid,
-      .review-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
-      }
-
-      .section,
-      .panel {
-        margin-top: 32px;
-        background: rgba(255,255,255,0.78);
-        border: 1px solid rgba(215,182,109,0.3);
-        border-radius: 24px;
-        padding: 24px 20px;
-        box-shadow: 0 14px 32px rgba(19, 41, 34, 0.08);
-      }
-
-      .section-head {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        align-items: center;
-        margin-bottom: 22px;
-      }
-
-      .section-head span {
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-
-      .offer-card,
-      .review-card,
-      .stat-box {
-        background: rgba(255,255,255,0.8);
-        border: 1px solid rgba(24,60,50,0.08);
-        border-radius: 18px;
-        padding: 18px;
-      }
-
-      .offer-card h3,
-      .review-card h3 {
-        color: var(--green);
-      }
-
-      .review-stars {
-        color: #ca9b30;
-        letter-spacing: 3px;
-      }
-
-      .vip-panel {
-        display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 18px;
-        align-items: stretch;
-        margin-top: 32px;
-      }
-
-      .vip-card {
-        display: grid;
-        grid-template-columns: 1fr 130px;
-        gap: 14px;
-        align-items: center;
-        min-height: 220px;
-        border-radius: 24px;
-        padding: 22px;
-        color: white;
-        background: radial-gradient(circle at 18% 100%, rgba(215,182,109,.22), transparent 28%), linear-gradient(135deg, #1d4a3d, #102c25);
-        border: 1px solid rgba(215,182,109,.7);
-      }
-
-      .member-id {
-        font-size: 1.25rem;
-        font-weight: 800;
-        direction: ltr;
-        text-align: right;
-      }
-
-      .member-name,
-      .gift-line {
-        margin: 8px 0 0;
-        font-size: 0.9rem;
-        color: rgba(255,255,255,.8);
-      }
-
-      .gift-line strong { color: var(--gold-soft); }
-
-      .qr-box {
-        width: 124px;
-        height: 124px;
-        background: #fff;
-        border-radius: 12px;
-        padding: 7px;
-        display: grid;
-        place-items: center;
-        overflow: hidden;
-      }
-      .qr-box canvas,
-      .qr-box img { display: block; max-width: 110px; max-height: 110px; }
-      .qr-placeholder {
-        color: #5d625f;
-        text-align: center;
-        font-size: .72rem;
-      }
-
-      .field {
-        margin: 14px 0;
-      }
-      label {
-        display: block;
-        margin-bottom: 7px;
-        font-weight: 800;
-        color: var(--green);
-        font-size: 0.92rem;
-      }
-      input, select, textarea {
-        display: block;
-        width: 100%;
-        padding: 12px 13px;
-        border: 1px solid #d7ddd7;
-        border-radius: 12px;
-        background: #fff;
-        color: var(--ink);
-        outline: none;
-        font: inherit;
-      }
-      input:focus, select:focus, textarea:focus {
-        border-color: var(--green-2);
-        box-shadow: 0 0 0 3px rgba(36,87,70,.12);
-      }
-      textarea { min-height: 100px; resize: vertical; }
-
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-
-      .status {
-        min-height: 24px;
-        margin: 12px 0 0;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-      .status.error { color: var(--danger); }
-      .status.success { color: #0f7a57; }
-
-      .note {
-        margin-top: 16px;
-        padding: 12px 14px;
-        background: #f7f5ed;
-        border-right: 3px solid var(--gold);
-        border-radius: 10px;
-        color: #5d584a;
-        font-size: 0.85rem;
-      }
-
-      .booking-shortcuts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 0 0 15px;
-        padding: 10px 12px;
-        border: 1px solid rgba(215,182,109,.35);
-        border-radius: 14px;
-      }
-      .guest-choice {
-        border: 1px solid rgba(24, 60, 50, 0.18);
-        background: #fff;
-        color: var(--green);
-        border-radius: 999px;
-        padding: 7px 12px;
-        font-weight: 800;
-        cursor: pointer;
-      }
-
-      .map-box {
-        background: #f5f7f4;
-        border: 1px dashed #c9d1c8;
-        border-radius: 14px;
-        padding: 12px;
-        margin-top: 10px;
-        color: var(--muted);
-      }
-
-      footer {
-        text-align: center;
-        color: var(--muted);
-        padding: 22px 16px 8px;
-        font-size: 0.85rem;
-      }
-
-      .floating-contact {
-        position: fixed;
-        left: 18px;
-        bottom: calc(18px + env(safe-area-inset-bottom));
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        padding: 12px 16px;
-        border-radius: 999px;
-        text-decoration: none;
-        color: #fff;
-        background: linear-gradient(135deg, #18a25f, #0f7c4d);
-        box-shadow: 0 14px 28px rgba(17, 124, 77, 0.25);
-        z-index: 50;
-        font-weight: 800;
-      }
-
-      @media (max-width: 950px) {
-        .hero,
-        .vip-panel,
-        .info-grid,
-        .offer-grid,
-        .review-grid,
-        .form-row { grid-template-columns: 1fr; }
-      }
-      @media (max-width: 540px) {
-        .floating-contact {
-          left: 12px;
-          right: 12px;
-          justify-content: center;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header class="topbar">
-      <div class="topbar-inner container">
-        <div class="brand">
-          <div class="brand-badge">VIP</div>
-          <div>
-            <h1>منتجع الخيمة</h1>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183c32">
+  <meta name="description" content="عضوية VIP وحجز الجلسات في منتجع الخيمة">
+  <title>منتجع الخيمة | عضوية VIP والحجز</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <style>
+    :root{color-scheme:light;--green:#183c32;--green-2:#245746;--gold:#d7b66d;--gold-soft:#f1d9a2;--cream:#f7f1e4;--ink:#1d2924;--muted:#5e6d66;--danger:#ab443d;--radius:24px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at top,rgba(215,182,109,.18),transparent 30%),linear-gradient(180deg,#f6efe5,#f2ead6 45%,#f3efe6);color:var(--ink);font:16px/1.7 Tahoma,Arial,sans-serif}button,input,select,textarea{font:inherit}a{color:inherit}.container{width:min(1100px,calc(100% - 32px));margin-inline:auto}
+    .topbar{background:rgba(20,35,31,.96);border-bottom:3px solid rgba(215,182,109,.8);color:#fff;position:sticky;top:0;z-index:30;backdrop-filter:blur(14px)}.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}.brand{display:flex;align-items:center;gap:12px}.brand-badge{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#f0d78d,#d7b66d);color:var(--green);font-weight:800}.brand h1{margin:0;font-size:1.35rem}.brand small{color:#ffffffc7}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:0;border-radius:999px;text-decoration:none;font-weight:800;cursor:pointer;transition:transform .2s,opacity .2s}.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.6;cursor:not-allowed}.btn-primary{background:linear-gradient(135deg,var(--gold-soft),var(--gold));color:#2a2217}.btn-light{background:#ffffff18;border:1px solid #ffffff44;color:white}.btn-whatsapp{background:linear-gradient(135deg,#18a25f,#0f7c4d);color:white}
+    main{padding:24px 0 46px}.hero{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:28px;padding:18px 0 12px}.eyebrow{display:inline-flex;padding:8px 18px;border-radius:999px;background:#d7b66d20;border:1px solid #d7b66d73;color:var(--green);font-weight:800}.hero h2{margin:12px 0;font-size:clamp(2rem,5vw,3.8rem);line-height:1.15;color:var(--green)}.hero p{color:var(--muted)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}.hero-card{padding:24px;border:1px solid #d7b66db3;border-radius:26px;color:white;background:linear-gradient(135deg,#1d4a3d,#102c25);box-shadow:0 18px 40px #13292224}.hero-card h3{color:var(--gold-soft)}
+    .section,.panel{margin-top:28px;background:#ffffffc7;border:1px solid #d7b66d55;border-radius:var(--radius);padding:24px 20px;box-shadow:0 14px 32px #13292212}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}.section-head h3,.panel h3{margin:0;color:var(--green)}.section-head span,.muted{color:var(--muted)}.offer-grid,.review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.offer-card{padding:18px;border-radius:18px;color:white;background:linear-gradient(135deg,#183c32,#45281b)}.offer-card h4{color:var(--gold-soft);margin:8px 0}.review-card{padding:18px;border:1px solid #d7b66d55;border-radius:18px;background:white}.review-stars{color:#ca9b30;letter-spacing:3px}.review-card blockquote{margin:10px 0;color:#495b56}
+    .vip-panel{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch;margin-top:28px}.panel{margin:0}.panel-lead{margin:6px 0 18px;color:var(--muted)}.vip-card{min-height:200px;padding:22px;border-radius:20px;color:white;background:radial-gradient(circle at 18% 100%,#d7b66d38,transparent 28%),linear-gradient(135deg,#1d4a3d,#102c25);border:1px solid #d7b66db3;display:grid;grid-template-columns:1fr 124px;gap:14px;align-items:center;overflow:hidden}.vip-card h4{margin:0;color:var(--gold-soft);font-size:1.2rem}.member-id{font-size:1.2rem;font-weight:800;direction:ltr;text-align:right}.member-name,.gift-line{margin:6px 0 0;font-size:.9rem;color:#ffffffcc}.gift-line strong{color:var(--gold-soft)}.qr-box{width:124px;height:124px;background:#fff;border-radius:12px;padding:7px;display:grid;place-items:center;overflow:hidden}.qr-box canvas,.qr-box img{display:block;max-width:110px;max-height:110px}.field{margin:14px 0}.field label{display:block;margin-bottom:7px;font-weight:800;color:var(--green);font-size:.92rem}.field input,.field select,.field textarea{display:block;width:100%;padding:12px 13px;border:1px solid #d7ddd7;border-radius:12px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green-2);box-shadow:0 0 0 3px #2457461f}.field textarea{min-height:100px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.status{min-height:24px;margin:12px 0 0;color:var(--muted);font-size:.9rem}.status.error{color:var(--danger)}.status.success{color:#0f7a57}.note{margin-top:16px;padding:12px 14px;background:#f7f5ed;border-right:3px solid var(--gold);border-radius:10px;color:#5d584a;font-size:.85rem}.consent{padding:12px;background:#f7f5ed;border-radius:12px}.consent label{display:flex;align-items:flex-start;gap:9px;font-weight:500;color:var(--ink)}.consent input{width:auto;margin-top:6px;accent-color:var(--green)}
+    .booking-shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 15px;padding:10px 12px;border:1px solid #d7b66d59;border-radius:14px}.guest-choice{border:1px solid #183c3230;background:white;color:var(--green);border-radius:999px;padding:7px 12px;font-weight:800;cursor:pointer}.map-box{background:#f5f7f4;border:1px dashed #c9d1c8;border-radius:14px;padding:12px;margin-top:10px;color:var(--muted)}footer{text-align:center;color:var(--muted);padding:20px 16px 5px;font-size:.85rem}.floating-contact{position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom));display:inline-flex;align-items:center;gap:9px;padding:12px 16px;border-radius:999px;text-decoration:none;color:white;background:linear-gradient(135deg,#18a25f,#0f7c4d);box-shadow:0 14px 28px #117c4d40;z-index:50;font-weight:800}
+    .kh-gallery{display:none;margin:28px 0;padding:clamp(20px,4vw,38px);border:1px solid #d7b66db3;border-radius:28px;color:white;background:radial-gradient(circle at 50% 0,#d7b66d2e,transparent 42%),linear-gradient(145deg,#183c32,#10251f 65%,#302219);box-shadow:0 18px 40px #1329222e}.kh-gallery-head{text-align:center;margin-bottom:24px}.kh-gallery-kicker{color:var(--gold-soft);font-weight:800}.kh-gallery h2{color:var(--gold-soft);font-size:clamp(1.55rem,3vw,2.4rem);margin:5px}.kh-gallery-lead{color:#ffffffcc}.kh-photo-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.kh-photo-card{position:relative;overflow:hidden;min-width:0;margin:0;border:1px solid #d7b66d99;border-radius:19px;background:#201b14}.kh-photo-card.feature{grid-column:span 2;grid-row:span 2}.kh-photo-button{display:block;width:100%;padding:0;border:0;background:#201b14;cursor:zoom-in}.kh-photo-card img{display:block;width:100%;height:220px;object-fit:cover;background:#e9dfc9}.kh-photo-card.feature img{height:100%;min-height:455px}.kh-photo-card figcaption{position:absolute;inset:auto 0 0;padding:30px 14px 12px;color:white;font-weight:800;background:linear-gradient(transparent,#08120edb);pointer-events:none}.kh-gallery-booking{display:flex;justify-content:center;margin-top:22px}.kh-gallery-booking a{display:inline-flex;padding:10px 24px;border-radius:999px;color:#2a2217;background:linear-gradient(135deg,var(--gold-soft),var(--gold));font-weight:800;text-decoration:none}.kh-lightbox[hidden]{display:none}.kh-lightbox{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:56px 24px;background:#070c0af5}.kh-lightbox img{max-width:min(94vw,1500px);max-height:84vh;object-fit:contain;border:2px solid var(--gold);border-radius:12px}.kh-lightbox-close{position:absolute;top:14px;inset-inline-end:18px;width:48px;height:48px;border:1px solid var(--gold-soft);border-radius:50%;color:white;background:var(--green);font-size:1.8rem;cursor:pointer}.kh-lightbox-caption{position:absolute;bottom:15px;color:var(--gold-soft);text-align:center}
+    /* Required registration gate: all existing resort content remains available after successful registration. */
+    body:not(.vip-activated)>.topbar,body:not(.vip-activated) main>.hero,body:not(.vip-activated) main>.section,body:not(.vip-activated) main>.vip-panel,body:not(.vip-activated) main>.kh-gallery,body:not(.vip-activated)>footer,body:not(.vip-activated)>.floating-contact{display:none!important}.registration-gate{max-width:760px;margin:24px auto}.registration-gate .panel{border-color:#d7b66d99}.registration-gate[hidden]{display:none}.body.vip-activated .registration-gate{display:none}.vip-activated .kh-gallery{display:block;animation:reveal .8s ease both}.vip-activated>.topbar,.vip-activated>footer{animation:reveal .7s ease both}@keyframes reveal{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:950px){.hero,.vip-panel{grid-template-columns:1fr}.offer-grid,.review-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.kh-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kh-photo-card.feature img{min-height:360px}}
+    @media(max-width:540px){.vip-card{grid-template-columns:1fr 96px;padding:16px}.qr-box{width:96px;height:96px}.qr-box canvas,.qr-box img{max-width:82px;max-height:82px}.kh-photo-grid{grid-template-columns:1fr}.kh-photo-card.feature{grid-column:auto;grid-row:auto}.kh-photo-card.feature img{min-height:250px}.floating-contact{left:12px;right:12px;justify-content:center}.topbar-inner{align-items:flex-start}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner container"><div class="brand"><div class="brand-badge">VIP</div><div><h1>منتجع الخيمة</h1><small>عضوية خاصة • حجوزات وضيافة</small></div></div><a class="btn btn-light" href="#booking">احجز الآن</a></div></header>
+  <main class="container">
+    <section class="registration-gate" id="registrationGate" aria-labelledby="registrationTitle">
+      <div class="panel">
+        <h2 id="registrationTitle">مرحباً بك في منتجع الخيمة</h2>
+        <p class="panel-lead">سجّل بياناتك ووافق على إرسالها إلى إدارة المنتجع لتفعيل عضوية VIP والدخول إلى الموقع.</p>
+        <form id="guestRegistrationForm">
+          <div class="form-row">
+            <div class="field"><label for="guestName">الاسم</label><input id="guestName" name="name" type="text" autocomplete="name" maxlength="100" required></div>
+            <div class="field"><label for="guestPhone">رقم الهاتف</label><input id="guestPhone" name="phone" type="tel" autocomplete="tel" maxlength="40" required></div>
           </div>
-        </div>
-        <a class="btn secondary" href="#booking">احجز الآن</a>
+          <div class="form-row">
+            <div class="field"><label for="guestEmail">البريد الإلكتروني</label><input id="guestEmail" name="email" type="email" autocomplete="email" maxlength="150" required></div>
+            <div class="field"><label for="visitType">نوع الزيارة</label><select id="visitType" name="visit_type" required><option value="">اختر نوع الزيارة</option><option value="عضوية VIP">عضوية VIP</option><option value="جلسة عائلية">جلسة عائلية</option><option value="جلسة خاصة">جلسة خاصة</option><option value="مناسبة خاصة">مناسبة خاصة</option></select></div>
+          </div>
+          <div class="field consent"><label><input id="guestConsent" name="consent" type="checkbox" value="موافق" required><span>أوافق على إرسال اسمي ورقم هاتفي وبريدي الإلكتروني ونوع الزيارة إلى إدارة منتجع الخيمة لمراجعة طلبي وتفعيل عضوية VIP والتواصل معي بشأنه.</span></label></div>
+          <button class="btn btn-primary" id="registerButton" type="submit">إرسال التسجيل والدخول</button>
+          <p class="status" id="registrationStatus" role="status" aria-live="polite"></p>
+        </form>
       </div>
-    </header>
+    </section>
 
-    <main class="container">
-      <section class="hero" aria-label="مقدمة منتجع الخيمة">
-        <div class="hero-copy">
-          <div class="eyebrow">الضيافة الفاخرة في قلب الصحراء</div>
-          <h2>تجربة VIP تجمع الأصالة والراحة والضيافة الراقية</h2>
-          <p>
-            استمتع بجلسات فاخرة، أجواء تراثية، طعام أصيل، وخدمة مميزة في منتجع الخيمة.
-            عضويتك VIP تتيح لك الأولوية في الحجز ومزايا إضافية خاصة.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#vip">طلب عضوية VIP</a>
-            <a class="btn secondary" href="#booking">حجز جلسة</a>
-          </div>
-        </div>
+    <section class="hero" aria-label="مقدمة منتجع الخيمة"><div class="hero-copy"><div class="eyebrow">الضيافة الفاخرة في قلب الصحراء</div><h2>تجربة VIP تجمع الأصالة والراحة والضيافة الراقية</h2><p>استمتع بجلسات فاخرة وأجواء تراثية وطعام أصيل وخدمة مميزة في منتجع الخيمة. عضويتك VIP تتيح لك الاستفادة من مزايا خاصة.</p><div class="actions"><a class="btn btn-primary" href="#vip">بطاقة عضوية VIP</a><a class="btn btn-light" href="#booking">احجز جلسة</a></div></div><div class="hero-card"><h3>عضوية VIP</h3><p>حجز سريع • ضيافة خاصة • جلسات مميزة • مزايا حصرية</p></div></section>
 
-        <div class="hero-card" aria-label="بطاقة VIP">
-          <div class="card-title">عضوية VIP</div>
-          <div class="vip-pill">مزايا حصرية</div>
-          <div>حجز سريع • ضيافة خاصة • جلسات مميزة • عطاءات خاصة</div>
-        </div>
-      </section>
+    <section class="section" aria-labelledby="offersTitle"><div class="section-head"><h3 id="offersTitle">عروض الضيافة</h3><span>مناسبات • جلسات • عضوية</span></div><div class="offer-grid"><article class="offer-card"><strong>VIP</strong><h4>عضوية خاصة</h4><p>الأولوية في الحجز ومزايا ضيافة مميزة.</p></article><article class="offer-card"><strong>جلسات</strong><h4>جلسات عائلية وخاصة</h4><p>مساحات مريحة وأجواء عربية أصيلة.</p></article><article class="offer-card"><strong>مناسبات</strong><h4>مناسبات خاصة</h4><p>تنظيم مناسبتك مع خدمة ضيافة راقية.</p></article></div></section>
 
-      <section class="section" aria-labelledby="offersTitle">
-        <div class="section-head">
-          <h3 id="offersTitle">عروض الضيافة</h3>
-          <span>مناسبات • جلسات • عضوية</span>
-        </div>
-        <div class="offer-grid">
-          <article class="offer-card">
-            <h3>VIP</h3>
-            <p>عضوية خاصة تمنحك الأولوية في الحجز وتخفيضات حصرية ومزايا فندقية متقدمة.</p>
-          </article>
-          <article class="offer-card">
-            <h3>جلسات عائلية</h3>
-            <p>مساحات مريحة، أجواء دافئة، ومشروبات ضيافة من الطابع العربي الأصيل.</p>
-          </article>
-          <article class="offer-card">
-            <h3>مناسبات خاصة</h3>
-            <p>تنظيم مناسبات مميزة مع خدمة فاخرة في أجواء تراثية مريحة ومنظمة.</p>
-          </article>
-        </div>
-      </section>
+    <section class="section" aria-labelledby="reviewsTitle"><div class="section-head"><h3 id="reviewsTitle">تقييمات العملاء</h3><span>آراء الحضور والضيوف</span></div><div class="review-grid"><article class="review-card"><div class="review-stars" aria-label="5 نجوم">★★★★★</div><blockquote>تجربة مريحة جدًا، الجو رائع، والضيافة كانت ممتازة.</blockquote><strong>أحمد م.</strong></article><article class="review-card"><div class="review-stars" aria-label="5 نجوم">★★★★★</div><blockquote>الخدمة احترافية والتجهيزات جميلة جدًا، خاصة في جلسات VIP.</blockquote><strong>سارة ر.</strong></article><article class="review-card"><div class="review-stars" aria-label="5 نجوم">★★★★★</div><blockquote>الأجواء تراثية والطعام لذيذ واهتمام الفريق كبير.</blockquote><strong>ياسر س.</strong></article></div></section>
 
-      <section class="section" aria-labelledby="reviewsTitle">
-        <div class="section-head">
-          <h3 id="reviewsTitle">تقييمات العملاء</h3>
-          <span>آراء الحضور والضيوف</span>
-        </div>
-        <div class="review-grid">
-          <article class="review-card">
-            <div class="review-stars" aria-label="5 نجوم">★★★★★</div>
-            <blockquote>تجربة مريحة جدًا، الجو رائع، والضيافة كانت ممتازة.</blockquote>
-            <strong>أحمد م.</strong>
-          </article>
-          <article class="review-card">
-            <div class="review-stars" aria-label="5 نجوم">★★★★★</div>
-            <blockquote>الخدمة احترافية والتجهيزات جميلة جدًا، خاصة في جلسات VIP.</blockquote>
-            <strong>سارة ر.</strong>
-          </article>
-          <article class="review-card">
-            <div class="review-stars" aria-label="5 نجوم">★★★★★</div>
-            <blockquote>الأجواء تراثية، الطعام لذيذ، واهتمام الفريق كبير جدًا.</blockquote>
-            <strong>ياسر س.</strong>
-          </article>
-        </div>
-      </section>
+    <div class="vip-panel"><section class="panel" id="vip" aria-labelledby="vipHeading"><h3 id="vipHeading">بطاقة عضوية VIP</h3><p class="panel-lead">بطاقتك ورمز QR يظهران بعد إرسال بيانات التسجيل بنجاح.</p><div class="vip-card" id="vipCard"><div><h4>عضوية VIP</h4><p>العضوية الخاصة</p><div class="member-id" id="memberId">KH-2026-----</div><p class="member-name" id="memberName">لم يتم تفعيل البطاقة بعد</p><p class="gift-line">هدية العضوية: <strong id="giftName">قهوة عربية فاخرة</strong></p></div><div class="qr-box" id="qrcode"><span class="qr-placeholder">QR</span></div></div><div class="field"><label for="vipName">اسم العضو</label><input id="vipName" type="text" maxlength="60" placeholder="اكتب اسمك" autocomplete="name"></div><div class="actions"><button class="btn btn-primary" id="activateButton" type="button">تفعيل البطاقة</button><button class="btn btn-light" id="downloadButton" type="button" disabled>تحميل البطاقة</button><button class="btn btn-light" id="inviteButton" type="button">دعوة صديق</button></div><p class="status" id="vipStatus" role="status" aria-live="polite"></p><div class="note">تُرسل بيانات التسجيل إلى إدارة المنتجع عبر النموذج، وتُحفظ نسخة البطاقة محلياً لعرضها على هذا الجهاز.</div></section>
 
-      <div class="vip-panel" id="vip">
-        <section class="panel" aria-labelledby="vipHeading">
-          <h3 id="vipHeading">بطاقة عضوية VIP</h3>
-          <p>تُحفظ بيانات العضوية والهوية داخل المتصفح، وتظهر كبطاقة VIP جاهزة للعرض أو الحجز.</p>
+      <section class="panel" id="booking" aria-labelledby="bookingHeading"><h3 id="bookingHeading">نموذج الحجز المباشر</h3><p class="panel-lead">املأ بيانات الجلسة وسنتواصل معك لتأكيد الحجز عبر واتساب.</p><div class="booking-shortcuts" aria-label="خيارات عدد الضيوف"><span>عدد الضيوف:</span><button class="guest-choice" type="button" data-guests="2">2</button><button class="guest-choice" type="button" data-guests="4">4</button><button class="guest-choice" type="button" data-guests="8">8</button></div><form id="bookingForm"><div class="field"><label for="bookingName">اسم الضيف</label><input id="bookingName" name="name" type="text" maxlength="80" required></div><div class="form-row"><div class="field"><label for="guests">عدد الضيوف</label><input id="guests" name="guests" type="number" min="1" max="100" value="2" required></div><div class="field"><label for="sessionType">نوع الجلسة</label><select id="sessionType" name="sessionType" required><option value="">اختر</option><option>جلسة عائلية</option><option>جلسة خاصة</option><option>مناسبة خاصة</option></select></div></div><div class="form-row"><div class="field"><label for="bookingDate">التاريخ</label><input id="bookingDate" name="date" type="date" required></div><div class="field"><label for="bookingTime">الوقت</label><input id="bookingTime" name="time" type="time" required></div></div><div class="field"><label for="bookingNotes">ملاحظات إضافية</label><textarea id="bookingNotes" name="notes" maxlength="1000" placeholder="اكتب أي تفاصيل أو طلب خاص"></textarea></div><div class="actions"><button class="btn btn-primary" type="submit">إرسال طلب الحجز عبر واتساب</button><a class="btn btn-light" id="mapButton" href="https://www.google.com/maps/search/?api=1&amp;query=28.324413%2C30.701297" target="_blank" rel="noopener noreferrer">عرض الموقع على الخريطة</a></div><p class="status" id="bookingStatus" role="status" aria-live="polite"></p><div class="map-box">العنوان: 28.324413, 30.701297</div></form></section></div>
 
-          <div class="vip-card" id="vipCard">
-            <div>
-              <h4>عضوية VIP</h4>
-              <p class="card-label">العضوية الخاصة</p>
-              <div class="member-id" id="memberId">KH-2026------</div>
-              <p class="member-name" id="memberName">لم يتم تفعيل البطاقة بعد</p>
-              <p class="gift-line">هدية العضوية: <strong id="giftName">قهوة عربية فاخرة</strong></p>
-            </div>
-            <div class="qr-box" id="qrcode">
-              <span class="qr-placeholder">QR</span>
-            </div>
-          </div>
+    <section class="kh-gallery" id="gallery" aria-labelledby="galleryTitle"><header class="kh-gallery-head"><span class="kh-gallery-kicker">منتجع الخيمة · ضيافة أصيلة</span><h2 id="galleryTitle">أجواء المنتجع وقائمة الضيافة</h2><p class="kh-gallery-lead">تفاصيل الجلسات التراثية ومذاقاتنا الشرقية في تجربة تجمع الأصالة والراحة.</p></header><div class="kh-photo-grid" id="photoGrid"></div><div class="kh-gallery-booking"><a href="#booking">احجز جلستك الآن</a></div></section>
+  </main>
+  <footer>منتجع الخيمة · بطاقة VIP والحجوزات</footer>
+  <a class="floating-contact" href="https://wa.me/201020014584" target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب"><span>✆</span><span>تواصل عبر واتساب</span></a>
+  <div class="kh-lightbox" id="khLightbox" role="dialog" aria-modal="true" aria-label="عرض الصورة" hidden><button class="kh-lightbox-close" type="button" aria-label="إغلاق الصورة">×</button><img alt="" src=""><div class="kh-lightbox-caption" aria-live="polite"></div></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    "use strict";
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xvkakbdo";
+    const STORAGE_KEY = "alkhaymah_vip_pass";
+    const WHATSAPP_NUMBER = "201020014584";
+    const gifts = ["قهوة عربية فاخرة","حلوى شرقية","ضيافة مجانية لشخص واحد","ترقية الجلسة حسب التوفر","شاي ملكي","خصم خاص على المشتريات"];
+    const photos = [
+      ["./food1.jpg","مائدة الضيافة والأطباق الشرقية","مائدة الضيافة",true],
+      ["./food2.jpg","تشكيلة مشويات من مطبخ الخيمة","مشويات الخيمة"],
+      ["./place1.jpg","أجواء الجلسات الخارجية في المنتجع","أجواء المنتجع"],
+      ["./menu1.jpg","قائمة الضيافة في منتجع الخيمة","قائمة الضيافة"],
+      ["./place2.jpg","جلسات الخيمة وسط الأشجار","جلسات وسط الطبيعة"],
+      ["./place3.jpg","جلسة عربية داخل الخيمة التراثية","الخيمة التراثية"],
+      ["./food3.jpg","أطباق الأرز والمشويات الطازجة","أطباق ومشويات"],
+      ["./banner2.jpg","هوية منتجع الخيمة وموقعه","عنوان منتجع الخيمة"]
+    ];
+    const fallbackImage = "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85";
+    const byId = id => document.getElementById(id);
+    const els = {
+      gate:byId("registrationGate"), registration:byId("guestRegistrationForm"), registerButton:byId("registerButton"), registrationStatus:byId("registrationStatus"),
+      memberId:byId("memberId"), memberName:byId("memberName"), gift:byId("giftName"), qr:byId("qrcode"), vipName:byId("vipName"), activate:byId("activateButton"), download:byId("downloadButton"), invite:byId("inviteButton"), vipStatus:byId("vipStatus"),
+      booking:byId("bookingForm"), bookingStatus:byId("bookingStatus"), date:byId("bookingDate"), guests:byId("guests"), modal:byId("khLightbox"), photoGrid:byId("photoGrid")
+    };
+    let currentPass = null;
 
-          <div class="field">
-            <label for="vipName">اسم العضو</label>
-            <input id="vipName" type="text" placeholder="اكتب اسمك" maxlength="60" />
-          </div>
+    function setStatus(element,message,error=false){element.textContent=message;element.classList.toggle("error",error);element.classList.toggle("success",Boolean(message)&&!error)}
+    function revealSite(){document.body.classList.add("vip-activated");els.gate.hidden=true}
+    function renderQr(memberId){els.qr.replaceChildren();if(typeof QRCode==="undefined"){const placeholder=document.createElement("span");placeholder.className="qr-placeholder";placeholder.textContent="QR";els.qr.appendChild(placeholder);return}new QRCode(els.qr,{text:memberId,width:110,height:110,colorDark:"#183c32",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M})}
+    function readPass(){try{const pass=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");return pass&&typeof pass.memberId==="string"&&typeof pass.gift==="string"?pass:null}catch(_){return null}}
+    function renderPass(pass){currentPass=pass;if(!pass){els.memberId.textContent="KH-"+new Date().getFullYear()+"-----";els.memberName.textContent="لم يتم تفعيل البطاقة بعد";els.gift.textContent=gifts[0];els.download.disabled=true;renderQr(els.memberId.textContent);return}els.memberId.textContent=pass.memberId;els.memberName.textContent=pass.name;els.vipName.value=pass.name||"";els.gift.textContent=pass.gift;renderQr(pass.memberId);els.download.disabled=false;els.activate.disabled=true;revealSite()}
+    function createPass(name){return{memberId:"KH-"+new Date().getFullYear()+"-"+Math.floor(1000+Math.random()*9000),name,gift:gifts[Math.floor(Math.random()*gifts.length)],activatedAt:new Date().toISOString()}}
+    function savePass(pass){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(pass))}catch(_){/* Site remains usable for this visit if storage is unavailable. */}}
 
-          <div class="actions" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">
-            <button class="btn primary" id="activateButton" type="button">تفعيل البطاقة</button>
-            <button class="btn secondary" id="downloadButton" type="button" disabled>تحميل البطاقة</button>
-            <button class="btn secondary" id="inviteButton" type="button">دعوة صديق</button>
-          </div>
-
-          <p class="status" id="vipStatus" aria-live="polite"></p>
-          <div class="note">
-            ملاحظة: يتم حفظ بيانات العضوية على هذا الجهاز فقط، ويجري استخدامها لعرض البطاقة داخل الموقع.
-          </div>
-        </section>
-
-        <section class="panel" id="booking" aria-labelledby="bookingHeading">
-          <h3 id="bookingHeading">نموذج الحجز المباشر</h3>
-          <p class="panel-lead">املأ بيانات الجلسة وسنتواصل معك لتأكيد الحجز.</p>
-
-          <div class="booking-shortcuts" aria-label="خيارات عدد الضيوف">
-            <button class="guest-choice" type="button" data-guests="2">2</button>
-            <button class="guest-choice" type="button" data-guests="4">4</button>
-            <button class="guest-choice" type="button" data-guests="8">8</button>
-          </div>
-
-          <form id="bookingForm">
-            <div class="field">
-              <label for="bookingName">اسم الضيف</label>
-              <input id="bookingName" name="name" type="text" maxlength="80" required />
-            </div>
-
-            <div class="form-row">
-              <div class="field">
-                <label for="guests">عدد الضيوف</label>
-                <input id="guests" name="guests" type="number" min="1" max="100" value="2" required />
-              </div>
-
-              <div class="field">
-                <label for="sessionType">نوع الجلسة</label>
-                <select id="sessionType" name="sessionType" required>
-                  <option value="">اختر</option>
-                  <option value="جلسة عائلية">جلسة عائلية</option>
-                  <option value="جلسة خاصة">جلسة خاصة</option>
-                  <option value="مناسبة خاصة">مناسبة خاصة</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="field">
-                <label for="bookingDate">التاريخ</label>
-                <input id="bookingDate" name="date" type="date" required />
-              </div>
-
-              <div class="field">
-                <label for="bookingTime">الوقت</label>
-                <input id="bookingTime" name="time" type="time" required />
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="bookingNotes">ملاحظات إضافية</label>
-              <textarea id="bookingNotes" name="notes" placeholder="اكتب أي تفاصيل أو طلب خاص"></textarea>
-            </div>
-
-            <div class="field">
-              <label>
-                <input id="guestConsent" name="consent" type="checkbox" required />
-                أوافق على أن تُرسل بياناتي إلى إدارة منتجع الخيمة لتفعيل عضوية VIP، مع مراعاة خصوصية بياناتي وفق سياسة المتجر والمنتجع.
-              </label>
-            </div>
-
-            <button class="btn primary" type="submit">إرسال طلب الحجز</button>
-            <p class="status" id="bookingStatus" aria-live="polite"></p>
-            <div class="map-box">العنوان: 28.324413, 30.701297</div>
-          </form>
-        </section>
-      </div>
-    </main>
-
-    <footer>منتجع الخيمة · بطاقة VIP والحجوزات</footer>
-
-    <a class="floating-contact" href="https://wa.me/201020014584" target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
-      <span>✆</span>
-      <span>تواصل عبر واتساب</span>
-    </a>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-      "use strict";
-
-      const STORAGE_KEY = "alkhaymah_vip_pass";
-      const WHATSAPP_NUMBER = "201020014584";
-      const gifts = [
-        "قهوة عربية فاخرة",
-        "حلوى شرقية",
-        "ضيافة مجانية لشخص واحد",
-        "ترقية الجلسة حسب التوفر",
-        "شاي ملكي",
-        "خصم خاص على المشتريات"
-      ];
-
-      const byId = id => document.getElementById(id);
-      const els = {
-        memberId: byId("memberId"),
-        memberName: byId("memberName"),
-        gift: byId("giftName"),
-        qr: byId("qrcode"),
-        name: byId("vipName"),
-        activate: byId("activateButton"),
-        download: byId("downloadButton"),
-        invite: byId("inviteButton"),
-        status: byId("vipStatus"),
-        booking: byId("bookingForm"),
-        bookingStatus: byId("bookingStatus"),
-        date: byId("bookingDate"),
-        guests: byId("guests")
-      };
-
-      let currentPass = null;
-
-      function setStatus(element, message, error = false) {
-        element.textContent = message;
-        element.classList.toggle("error", error);
-        element.classList.toggle("success", Boolean(message) && !error);
-      }
-
-      function renderQr(memberId) {
-        els.qr.replaceChildren();
-        if (typeof QRCode === "undefined") {
-          const placeholder = document.createElement("span");
-          placeholder.className = "qr-placeholder";
-          placeholder.textContent = "QR";
-          els.qr.appendChild(placeholder);
-          return false;
-        }
-
-        new QRCode(els.qr, {
-          text: memberId,
-          width: 110,
-          height: 110,
-          colorDark: "#183c32",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.M
-        });
-        return true;
-      }
-
-      function readPass() {
-        try {
-          const pass = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-          return pass && typeof pass.memberId === "string" && typeof pass.gift === "string" ? pass : null;
-        } catch (_) {
-          return null;
-        }
-      }
-
-      function renderPass(pass) {
-        currentPass = pass;
-
-        if (!pass) {
-          els.memberId.textContent = "KH-" + new Date().getFullYear() + "-----";
-          els.memberName.textContent = "لم يتم تفعيل البطاقة بعد";
-          els.gift.textContent = gifts[0];
-          els.download.disabled = true;
-          els.activate.disabled = false;
-          renderQr("KH-" + new Date().getFullYear() + "-----");
-          return;
-        }
-
-        els.memberId.textContent = pass.memberId;
-        els.memberName.textContent = pass.name;
-        els.gift.textContent = pass.gift;
-        renderQr(pass.memberId);
-        els.download.disabled = false;
-        els.activate.disabled = true;
-        document.body.classList.add("vip-activated");
-      }
-
-      function activatePass() {
-        if (currentPass) {
-          setStatus(els.status, "البطاقة مفعّلة بالفعل على هذا الجهاز.");
-          return;
-        }
-
-        const name = els.name.value.trim();
-        if (!name) {
-          setStatus(els.status, "يرجى كتابة الاسم أولاً لتفعيل البطاقة.", true);
-          els.name.focus();
-          return;
-        }
-
-        const pass = {
-          memberId: "KH-" + new Date().getFullYear() + "-" + Math.floor(Math.random() * 9000 + 1000),
-          name,
-          gift: gifts[Math.floor(Math.random() * gifts.length)],
-          activatedAt: new Date().toISOString()
-        };
-
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(pass));
-        } catch (error) {
-          setStatus(els.status, "تعذر حفظ بيانات العضوية في هذا الجهاز.", true);
-          return;
-        }
-
+    els.registration.addEventListener("submit",async event=>{
+      event.preventDefault();
+      if(!els.registration.reportValidity())return;
+      if(!byId("guestConsent").checked){setStatus(els.registrationStatus,"يرجى الموافقة على إرسال البيانات قبل التسجيل.",true);return}
+      if(currentPass){revealSite();return}
+      els.registerButton.disabled=true;
+      setStatus(els.registrationStatus,"جارٍ إرسال بياناتك إلى إدارة منتجع الخيمة…");
+      try{
+        const response=await fetch(FORMSPREE_ENDPOINT,{method:"POST",headers:{Accept:"application/json"},body:new FormData(els.registration)});
+        if(!response.ok)throw new Error("Formspree request failed");
+        const pass=createPass(byId("guestName").value.trim());
+        savePass(pass);
         renderPass(pass);
-        setStatus(els.status, "تم تفعيل بطاقة VIP بنجاح.");
-      }
+        els.registration.reset();
+        setStatus(els.vipStatus,"تم استلام بيانات التسجيل وتفعيل بطاقة VIP على هذا الجهاز.");
+      }catch(error){
+        setStatus(els.registrationStatus,"تعذّر إرسال التسجيل. تحقق من اتصال الإنترنت وحاول مرة أخرى؛ لم يتم تفعيل الدخول.",true);
+      }finally{els.registerButton.disabled=false}
+    });
 
-      els.activate.addEventListener("click", activatePass);
-      els.download.addEventListener("click", () => {
-        const win = window.open("", "_blank", "width=900,height=650");
-        if (!win) {
-          setStatus(els.status, "تعذر فتح نافذة البطاقة.", true);
-          return;
-        }
+    els.activate.addEventListener("click",()=>{
+      if(currentPass){setStatus(els.vipStatus,"البطاقة مفعّلة بالفعل على هذا الجهاز.");return}
+      const name=els.vipName.value.trim();
+      if(!name){setStatus(els.vipStatus,"أكمل التسجيل من بوابة الترحيب أولاً.",true);els.gate.scrollIntoView({behavior:"smooth"});return}
+      setStatus(els.vipStatus,"يجب إرسال نموذج التسجيل وموافقتك لإدارة المنتجع قبل تفعيل البطاقة.",true);
+    });
+    els.download.addEventListener("click",()=>{
+      if(!currentPass)return;
+      const win=window.open("","_blank","width=900,height=650");
+      if(!win){setStatus(els.vipStatus,"تعذر فتح نافذة البطاقة.",true);return}
+      const safeName=document.createElement("span");safeName.textContent=currentPass.name;
+      win.document.write("<!doctype html><html lang='ar' dir='rtl'><head><meta charset='utf-8'><title>بطاقة VIP</title><style>body{font-family:Tahoma,Arial,sans-serif;background:#f4f1ea;padding:30px}.card{max-width:520px;margin:auto;padding:24px;border:1px solid #d7b66d;border-radius:20px;background:#183c32;color:#fff;text-align:center}.gold{color:#f1d9a2}</style></head><body><main class='card'><h1 class='gold'>منتجع الخيمة · VIP</h1><p>اسم العضو: "+safeName.innerHTML+"</p><p>رقم العضوية: "+els.memberId.textContent+"</p><p>هدية العضوية: "+els.gift.textContent+"</p></main></body></html>");
+      win.document.close();
+    });
+    els.invite.addEventListener("click",()=>{const text=encodeURIComponent("انضم إلى منتجع الخيمة واستمتع بمزايا عضوية VIP.");window.open("https://wa.me/?text="+text,"_blank","noopener,noreferrer")});
+    document.querySelectorAll(".guest-choice").forEach(button=>button.addEventListener("click",()=>{els.guests.value=button.dataset.guests}));
+    els.booking.addEventListener("submit",event=>{
+      event.preventDefault();
+      if(!currentPass){setStatus(els.bookingStatus,"يرجى إكمال تسجيل بيانات الضيف أولاً.",true);return}
+      if(!els.booking.reportValidity())return;
+      const data=new FormData(els.booking);
+      const message=["طلب حجز في منتجع الخيمة",`الاسم: ${data.get("name")}`,`عدد الضيوف: ${data.get("guests")}`,`نوع الجلسة: ${data.get("sessionType")}`,`التاريخ: ${data.get("date")}`,`الوقت: ${data.get("time")}`,data.get("notes")?`ملاحظات: ${data.get("notes")}`:""].filter(Boolean).join("\n");
+      window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
+      setStatus(els.bookingStatus,"تم تجهيز طلب الحجز في واتساب لإرساله إلى المنتجع.");
+    });
+    els.date.min=new Date().toLocaleDateString("en-CA");
 
-        win.document.write(
-          "<!doctype html><html lang='ar' dir='rtl'><head><meta charset='utf-8'><title>بطاقة VIP</title><style>body{font-family:Tahoma,Arial,sans-serif;background:#f4f1ea;padding:32px;text-align:center;color:#183c32} .card{max-width:500px;margin:0 auto;border:1px solid #d7b66d;border-radius:20px;background:#fff;padding:24px} h1{margin:0 0 8px} .meta{margin-top:14px;color:#5e6d66}</style></head><body><div class='card'><h1>بطاقة VIP</h1><div>اسم العضو: " +
-          (currentPass ? currentPass.name : "غير محدد") +
-          "</div><div class='meta'>رقم العضوية: " +
-          els.memberId.textContent +
-          "</div><div class='meta'>هدية العضوية: " +
-          els.gift.textContent +
-          "</div></div></body></html>"
-        );
-        win.document.close();
-      });
+    photos.forEach(([src,alt,label,featured])=>{
+      const figure=document.createElement("figure");figure.className="kh-photo-card"+(featured?" feature":"");
+      const button=document.createElement("button");button.className="kh-photo-button";button.type="button";button.setAttribute("aria-label","تكبير الصورة: "+label);
+      const image=document.createElement("img");image.loading="lazy";image.decoding="async";image.src=src;image.alt=alt;image.onerror=()=>{image.onerror=null;image.src=fallbackImage};
+      button.appendChild(image);const caption=document.createElement("figcaption");caption.textContent=label;figure.append(button,caption);els.photoGrid.appendChild(figure);
+      button.addEventListener("click",()=>{byId("khLightbox").querySelector("img").src=image.currentSrc||image.src;byId("khLightbox").querySelector("img").alt=alt;byId("khLightbox").querySelector(".kh-lightbox-caption").textContent=label;els.modal.hidden=false;document.body.style.overflow="hidden";byId("khLightbox").querySelector(".kh-lightbox-close").focus()});
+    });
+    let lastPhotoTrigger=null;
+    function closeLightbox(){els.modal.hidden=true;document.body.style.overflow="";lastPhotoTrigger?.focus()}
+    document.querySelectorAll(".kh-photo-button").forEach(button=>button.addEventListener("click",()=>{lastPhotoTrigger=button}));
+    byId("khLightbox").querySelector(".kh-lightbox-close").addEventListener("click",closeLightbox);
+    els.modal.addEventListener("click",event=>{if(event.target===els.modal)closeLightbox()});
+    document.addEventListener("keydown",event=>{if(!els.modal.hidden&&event.key==="Escape")closeLightbox()});
 
-      els.invite.addEventListener("click", () => {
-        const message = encodeURIComponent(
-          "انضم إلى منتجع الخيمة واستمتع بملف VIP الخاص بك."
-        );
-        window.open("https://wa.me/?text=" + message, "_blank", "noopener,noreferrer");
-      });
-
-      document.querySelectorAll(".guest-choice").forEach(button => {
-        button.addEventListener("click", () => {
-          els.guests.value = button.dataset.guests;
-        });
-      });
-
-      els.booking.addEventListener("submit", event => {
-        event.preventDefault();
-
-        const data = new FormData(els.booking);
-        const values = [
-          data.get("name"),
-          data.get("guests"),
-          data.get("sessionType"),
-          data.get("date"),
-          data.get("time"),
-          data.get("notes")
-        ].map(value => (value ?? "").toString().trim());
-
-        if (values.some(value => !value)) {
-          setStatus(els.bookingStatus, "يرجى تعبئة جميع الحقول المطلوبة قبل إرسال الحجز.", true);
-          return;
-        }
-
-        // ضع رابط Formspree الخاص بك هنا بعد الإنشاء في formspree.io.
-        // مثال: https://formspree.io/f/abcd1234
-        const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
-
-        if (FORMSPREE_ENDPOINT.includes("YOUR_FORM_ID")) {
-          setStatus(els.bookingStatus, "لم يُرسل الطلب بعد. استبدل FORMSPREE_ENDPOINT برابط النموذج الخاص بك لاحقاً.", true);
-          return;
-        }
-
-        setStatus(els.bookingStatus, "جارٍ إرسال طلب الحجز إلى إدارة المنتجع… ");
-
-        fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: new FormData(els.booking)
-        })
-          .then(response => {
-            if (!response.ok) throw new Error("تعذّر إرسال الطلب");
-            setStatus(els.bookingStatus, "تم إرسال طلب الحجز بنجاح، وسيتواصل معك الفريق قريباً.");
-            els.booking.reset();
-          })
-          .catch(() => {
-            setStatus(els.bookingStatus, "تعذّر إرسال الحجز الآن. تأكد من رابط Formspree ثم حاول مرة أخرى.", true);
-          });
-      });
-
-      els.date.min = new Date().toLocaleDateString("en-CA");
-      const savedPass = readPass();
-      if (savedPass) {
-        renderPass(savedPass);
-      } else {
-        renderPass(null);
-      }
-
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./sw.js").catch(() => {});
-        });
-      }
-    </script>
-  </body>
+    const savedPass=readPass();
+    if(savedPass){renderPass(savedPass)}else{renderQr("KH-"+new Date().getFullYear()+"-----")}
+    if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
+  </script>
+</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
