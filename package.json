@@ -1,0 +1,12 @@
+{
+  "name": "alkhaymah-vip",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static Arabic RTL VIP and loyalty wallet prototype",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
